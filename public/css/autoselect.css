@@ -1,0 +1,45 @@
+.form-grupo{
+    position: relative;
+}
+.form-grupo .lista-autocomplete{
+    position: absolute;
+    top: 73px;
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    border: 1px solid rgb(217, 217, 217);
+    box-shadow: 0px 0px 4px 1px rgb(241, 241, 241);
+    box-sizing: border-box;
+    background-color: rgb(249, 249, 249);
+    padding: 5px 0px 5px 0px;
+    z-index: 9999;
+}
+.form-grupo .lista-autocomplete span{
+    padding: 5px 10px 5px 10px;
+}
+.form-grupo .lista-autocomplete span:hover{
+    background-color: rgb(0, 94, 201);
+    color: white;
+    cursor: pointer;
+}
+#icone-loading-select{
+    width: 15px;
+    position: absolute;
+    top: 42px;
+    right: 20px;
+}
+.autoselect-arrow-down{
+    width: 10px;
+    position: absolute;
+    right: 15px;
+    top: 44px;
+}
+.autoselect-delete{
+    width: 15px;
+    position: absolute;
+    right: 15px;
+    top: 43px;
+}
+.autoselect-delete:hover{
+    cursor:pointer
+}

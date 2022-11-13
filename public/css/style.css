@@ -1,0 +1,564 @@
+/* ------------------------------------ Container do cabeçalho sessão ----------------------------------------*/
+#header-secao{
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #C9C6C6;
+    border-radius: 5px;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+#header-secao h4{
+    color: #656565;
+    display: inline;
+    margin: 0;
+    font-size: 24pt;
+    font-weight: 300;
+}
+#header-secao img{
+    height: 20px;
+    width: 30px;
+    margin-right:5px;
+}
+#header-secao a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #5901B0;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+}
+#header-secao button:hover{
+    background-color: #5901b0e2;
+}
+
+/* -------------------------------------------- Corpo sessão -------------------------------------------------*/
+.body-secao{
+    box-shadow: 0px 2px 3px 0 #DDDDDD;
+    background-color: #FFFFFF;
+    border: 1px solid #CECECE;
+    box-sizing: border-box;
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 5px;
+    padding: 30px;
+}
+
+/* ---------------------------------------- Area de filtros chamados -----------------------------------------*/
+#filtro-chamados #titulo-filtro-chamados{
+    display: flex;
+    border-bottom: 1px solid #C0C0C0;
+    padding-bottom: 13px;
+    align-items: center;
+    margin-bottom: 30px;
+}
+#filtro-chamados #titulo-filtro-chamados span{
+    font-size: 20px;
+    color: #565656;
+    margin-left: 10px;
+    font-weight: 500;
+}
+#filtro-chamados form{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+#filtro-chamados .form-grupo{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+}
+#filtro-chamados .form-grupo label{
+    margin-bottom: 10px;
+    color: #808080;
+}
+#filtro-chamados .form-grupo input,select{
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: 1px solid #C0C0C0;
+    height: 30px;
+    padding: 0 10px;
+    margin-bottom: 25px;
+    font-weight: 300;
+}
+#filtro-chamados .form-grupo input[type=text]{
+    /* min-width: 250px; */
+}
+#filtro-chamados .form-grupo select{
+    /* min-width: 250px; */
+}
+#filtro-chamados .grupo-botoes{
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    width: 30%;
+}
+#filtro-chamados .grupo-botoes button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    padding: 10px;
+    width: 140px;
+    height: 36px;
+    border-radius: 5px;
+    box-shadow: 0 2px 3px 0 #959595;
+    cursor: pointer;
+}
+#filtro-chamados .grupo-botoes img{
+    width: 15px;
+    margin-right: 10px;
+}
+#filtro-chamados .grupo-botoes span{
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+}
+#filtro-chamados .grupo-botoes button:nth-child(1){
+    background-color: #00CD46;
+    margin-right: 15px;
+}
+#filtro-chamados .grupo-botoes button:nth-child(2){
+    background-color: #B7B7B7;
+}
+#filtro-chamados .grupo-botoes button:nth-child(1):hover{
+    background-color: #00cd44cb;
+}
+#filtro-chamados .grupo-botoes button:nth-child(2):hover{
+    background-color: #b7b7b7d2;
+}
+
+
+/*  ------------------------------------------- Novo chamado ------------------------------------------------- */
+
+#header-secao-adicionar{
+    width: 100%;
+    background-color: #FFFFFF;
+    border: 1px solid #C9C6C6;
+    border-radius: 5px;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+#header-secao-adicionar h4{
+    color: #656565;
+    display: inline;
+    margin: 0;
+    font-size: 24pt;
+    font-weight: 300;
+}
+#header-secao-adicionar img{
+    height: 20px;
+    width: 30px;
+    margin-right:5px;
+}
+#header-secao-adicionar a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #5901B0;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.btn-limpar{
+    background-color: #B7B7B7;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    padding: 10px;
+    width: 140px;
+    height: 40px;
+    border-radius: 5px;
+    box-shadow: 0 2px 3px 0 #959595;
+    font-weight: 400;
+    cursor: pointer;
+}
+.btn-limpar:hover{
+    background-color: #c0c0c0;
+}
+#novo-chamado form{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+#novo-chamado .form-grupo{
+    display: flex;
+    flex-direction: column;
+    width: 46%;
+    position: relative;
+}
+#novo-chamado .form-grupo .flash-add{
+    background-color: #5901B0;
+    border: none;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: -38px;
+    top: 33px;
+    cursor: pointer;
+}
+#novo-chamado .form-grupo .flash-add img{
+    width: 16px;
+    height: 16px;
+}
+#novo-chamado .form-grupo label{
+    margin-bottom: 10px;
+    color: #000000;
+    font-weight: 300;
+}
+#novo-chamado .form-grupo label small{
+    margin-left: 10px;
+    font-size: 9px;
+    color: rgba(255, 0, 0, 0.83);
+    font-weight: bold;
+}
+#novo-chamado .form-grupo input,select{
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #B7B7B7;
+    height: 40px;
+    padding: 0 10px;
+    margin-bottom: 25px;
+    font-weight: 300;
+}
+#novo-chamado .form-grupo input[type="color"]{
+   border:none;
+   padding: none;
+   width: 120px;
+}
+#novo-chamado .form-grupo textarea{
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #B7B7B7;
+    padding: 10px;
+    margin-bottom: 25px;
+    font-weight: 300;
+}
+#novo-chamado .form-grupo.full{
+    width: 100%;
+}
+#novo-chamado .grupo-botoes{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 30px;
+}
+#novo-chamado .grupo-botoes button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    padding: 10px;
+    min-width: 140px;
+    height: 36px;
+    border-radius: 5px;
+    box-shadow: 0 2px 3px 0 #959595;
+    cursor: pointer;
+    background-color: #5901B0;
+}
+#novo-chamado .grupo-botoes button:nth-child(1){
+    background-color: #b00101;
+}
+#novo-chamado .grupo-botoes button:nth-child(1) img{
+    width: 17px;
+    height: 17px;
+}
+#novo-chamado .grupo-botoes img{
+    width: 15px;
+    margin-right: 10px;
+}
+#novo-chamado .grupo-botoes span{
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+}
+#novo-chamado .grupo-botoes button:hover{
+    background-color: #47008f;
+}
+#tabela-default{
+    width: 100%;
+    border-collapse: collapse;
+}
+#tabela-default thead tr th{
+    border-bottom:1px solid #C8C8C8;
+    padding-bottom: 10px;
+    text-align: left;
+    font-size: 17px;
+}
+#tabela-default tbody tr{
+    font-family: 'roboto';
+    font-weight: 300;
+}
+#tabela-default tbody tr td{
+    padding: 20px 0;
+    border-bottom: 1px solid #C8C8C8;
+    font-size: 14px;
+}
+#tabela-default tbody tr button{
+    border: none;
+    background-color: white;
+    width: 30px;
+    height:30px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#tabela-default tbody tr button.view{
+    background-color: #005F95;
+}
+#tabela-default tbody tr button.delete{
+    background-color: #AE0F0F;
+}
+#tabela-default tbody tr button.delete img {
+    width: 10px;
+    height: 11px;
+}
+#tabela-default tbody tr button.view img{
+    width: 17px;
+    height: 12px;
+}
+#btn-visualizar-atualizacoes{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    padding: 10px 20px;
+    min-width: 140px;
+    height: 36px;
+    border-radius: 5px;
+    box-shadow: 0 2px 3px 0 #959595;
+    cursor: pointer;
+    background-color: #AAAAAA;
+    color: white;
+    margin:10px 0  80px 0;
+}
+#btn-visualizar-atualizacoes img{
+    width: 15px;
+    margin-right: 10px;
+}
+#btn-visualizar-atualizacoes span{
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+}
+#btn-visualizar-atualizacoes button:hover{
+    background-color: #47008f;
+}
+.titulo-grap{
+    margin-bottom: 30px;
+}
+
+/* ----------------------------------------------------- */
+
+.form-section{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.form-grupo{
+    display: flex;
+    flex-direction: column;
+    width: 46%;
+    position: relative;
+}
+.form-grupo.w-flex{
+    display: flex;
+    flex-direction: column;
+    min-width: 31%;
+    width: auto;
+    position: relative;
+}
+.form-grupo label{
+    margin-bottom: 10px;
+    color: #000000;
+    font-weight: 300;
+}
+.form-grupo label small{
+    margin-left: 10px;
+    font-size: 9px;
+    color: rgba(255, 0, 0, 0.83);
+    font-weight: bold;
+}
+.form-grupo input,select{
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #B7B7B7;
+    height: 40px;
+    padding: 0 10px;
+    margin-bottom: 25px;
+    font-weight: 300;
+}
+.form-grupo input[type="color"]{
+   border:none;
+   padding: none;
+   width: 120px;
+}
+.form-grupo textarea{
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #B7B7B7;
+    padding: 10px;
+    margin-bottom: 25px;
+    font-weight: 300;
+}
+.form-grupo.full{
+    width: 100%;
+}
+.grupo-botoes{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 30px;
+}
+.grupo-botoes button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    padding: 10px 20px;
+    min-width: 140px;
+    height: 36px;
+    border-radius: 5px;
+    box-shadow: 0 2px 3px 0 #959595;
+    cursor: pointer;
+    background-color: #5901B0;
+}
+.grupo-botoes button:nth-child(1){
+    background-color: #b00101;
+}
+.grupo-botoes button:nth-child(1) img{
+    width: 17px;
+    height: 17px;
+}
+.grupo-botoes img{
+    width: 15px;
+    margin-right: 10px;
+}
+.grupo-botoes span{
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+}
+.grupo-botoes button:hover{
+    background-color: #47008f;
+}
+.grupo-botoes.btn-right{
+    justify-content: flex-end;
+}
+.btn-default { 
+    background-color: #5901B0 !important;
+}
+.input-table-row td input{
+    all:unset;
+}
+.tabela-tamanho-fixo{
+    overflow:auto;
+    max-height: 200px;
+}
+.tabela-tamanho-fixo::-webkit-scrollbar {
+    width: 8px;               /* width of the entire scrollbar */
+} 
+.tabela-tamanho-fixo::-webkit-scrollbar-track {
+    background: rgb(224, 224, 224);        /* color of the tracking area */
+}
+.tabela-tamanho-fixo::-webkit-scrollbar-thumb {
+    background-color: rgb(172, 172, 172);    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
+    border: none;  /* creates padding around scroll thumb */
+}
+.tabela-tamanho-fixo::-webkit-scrollbar-thumb:hover{
+    background-color: rgb(118, 118, 118);
+}
+.titulo-subsection{
+    border-bottom: 1px solid #AEAEAE;
+    padding: 0 0 15px 0;
+    margin-bottom: 40px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+/* Area do filtros de contas  */
+#filtro-contas #titulo-filtro-chamados{
+    display: flex;
+    border-bottom: 1px solid #C0C0C0;
+    padding-bottom: 13px;
+    align-items: center;
+    margin-bottom: 30px;
+}
+#filtro-contas #titulo-filtro-chamados span{
+    font-size: 20px;
+    color: #565656;
+    margin-left: 10px;
+    font-weight: 500;
+}
+#filtro-contas form{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap:nowrap;
+    margin-top: 40px;
+}
+#filtro-contas .form-grupo{
+    width: auto;
+    display: block;
+}
+.form-grupo-cliente-filtro{
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+.form-grupo-cliente-filtro input{
+    background-color: #F9F9F9;
+    border-radius: 5px;
+    border: 1px solid #C0C0C0;
+    height: 30px;
+    padding: 5px 10px;
+    margin-bottom: 25px;
+    font-weight: 300;
+    flex-grow: 3;
+}
+.form-grupo-cliente-filtro .grupo-botoes{
+    display: block;
+    margin: 0;
+    width: auto;
+    flex-grow: 0;
+    margin-left: 10px;
+}
+.form-grupo-cliente-filtro .grupo-botoes button{
+    background-color: #5200a4;
+    color: white;
+    padding: 20px 0 ;
+    box-shadow: none;
+    border: none;
+}
+.form-grupo-cliente-filtro .grupo-botoes button:hover{
+    background-color: #6700cd;
+}
+.ordernar-filtro {
+    margin-left: 20px;
+}
+.ordernar-filtro select{
+    padding: 0 10px;
+    background-color:#F9F9F9;
+    margin-left: 10px;
+}
+#filtro-contas .table{
+    margin: 50px 0;
+}
