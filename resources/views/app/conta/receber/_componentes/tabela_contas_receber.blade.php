@@ -11,44 +11,37 @@
         </tr>
         </thead>
         <tbody>
-            <tr id="cliente_1">
-                <td>Rafael raposo leite</td>
-                <td>24/03/2023</td>
-                <td>R$299,99</td>
-                <td>N/A</td>
-                <td>
-                    <span class="status-table" style="color:white;background-color:rgb(188, 0, 0)">
-                        Pendente
-                    </span>
-                </td>
-                <td>
-                    <button onclick="editar()" class="view">
-                        <img src="{{ asset('icones/lapis.svg') }}" alt="">
-                    </button>
-                    <button class="delete" onclick="deleteCliente()">
-                        <img src="{{ asset('icones/lixeira.svg') }}" alt="">
-                    </button>
-                </td>
-            </tr>
-            <tr id="cliente_1">
-                <td>Rafael raposo leite</td>
-                <td>30/10/2022</td>
-                <td>R$59,90</td>
-                <td>29/10/2022</td>
-                <td>
-                    <span class="status-table" style="color:white;background-color:rgb(22, 163, 0)">
-                        Pago
-                    </span>
-                </td>
-                <td>
-                    <button onclick="editar()" class="view">
-                        <img src="{{ asset('icones/lapis.svg') }}" alt="">
-                    </button>
-                    <button class="delete" onclick="deleteCliente()">
-                        <img src="{{ asset('icones/lixeira.svg') }}" alt="">
-                    </button>
-                </td>
-            </tr>
+            @foreach ($contas as $conta)
+                
+                <tr id="cliente_1">
+                    <td>{{$conta->venda->cliente->nome}}</td>
+                    <td>{{date('d/m/Y', strtotime($conta->data_vencimento)) }}</td>
+                    <td>R$ {{ number_format($conta->valor_receber, 2, ',', '') }}</td>
+                    <td> {{$conta->data_pagamento ? date('d/m/Y', strtotime($conta->data_pagamento)) : 'N/I'}}</td>
+                    <td>
+                        @if ($conta->data_pagamento)
+                            <span class="status-table" style="color:white;background-color:rgb(42, 181, 0)">
+                                Conta Paga
+                            </span>
+                        @else
+                            <span class="status-table" style="color:white;background-color:rgb(188, 0, 0)">
+                                Pendente
+                            </span>
+                        @endif
+                    </td>
+                    <td>
+                        <button title="Visualizar conta" onclick="receberConta({{$conta->id}})" class="view">
+                            <img src="{{ asset('icones/eye-solid.svg') }}" alt="">
+                        </button>
+                        <button title="Receber conta" onclick="receberConta({{$conta->id}})" class="receber">
+                            <img src="{{ asset('icones/dollar.svg') }}" alt="">
+                        </button>
+                    </td>
+                </tr>
+            
+            @endforeach
+        
         </tbody>
     </table>
+    <div class="paginacao">{{$contas->appends($request->all())->links()}}</div>
 </div>

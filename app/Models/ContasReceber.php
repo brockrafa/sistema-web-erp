@@ -9,4 +9,9 @@ class ContasReceber extends Model
 {
     use HasFactory;
     protected $table = 'contas_receber';
+
+    public function venda(){
+        return $this->hasOne(Venda::class,'id','venda_id');
+    }
+
 }

@@ -319,9 +319,13 @@
     height:30px;
     border-radius: 5px;
     cursor: pointer;
+    box-sizing: border-box;
 }
 #tabela-default tbody tr button.view{
     background-color: #005F95;
+}
+#tabela-default tbody tr button.receber{
+    background-color: #d39400;
 }
 #tabela-default tbody tr button.delete{
     background-color: #AE0F0F;
@@ -332,6 +336,10 @@
 }
 #tabela-default tbody tr button.view img{
     width: 17px;
+    height: 12px;
+}
+#tabela-default tbody tr button.receber img{
+    width: 25px;
     height: 12px;
 }
 #btn-visualizar-atualizacoes{
@@ -521,8 +529,15 @@
 }
 .form-grupo-cliente-filtro{
     display: flex;
+    align-items: center;
     flex-direction: row;
     flex-grow: 1;
+}
+.form-grupo-cliente-filtro label{
+    margin-bottom: 25px;
+    margin-right: 20px;
+    color: #000000;
+    font-weight: 300;
 }
 .form-grupo-cliente-filtro input{
     background-color: #F9F9F9;
@@ -534,31 +549,38 @@
     font-weight: 300;
     flex-grow: 3;
 }
-.form-grupo-cliente-filtro .grupo-botoes{
+.form-grupo-cliente-filtro.grupo-botoes{
     display: block;
     margin: 0;
     width: auto;
     flex-grow: 0;
-    margin-left: 10px;
+    margin-left: 30px;
 }
-.form-grupo-cliente-filtro .grupo-botoes button{
+.form-grupo-cliente-filtro.grupo-botoes button{
     background-color: #5200a4;
     color: white;
     padding: 20px 0 ;
     box-shadow: none;
     border: none;
 }
-.form-grupo-cliente-filtro .grupo-botoes button:hover{
+.form-grupo-cliente-filtro.grupo-botoes button:hover{
     background-color: #6700cd;
 }
 .ordernar-filtro {
-    margin-left: 20px;
+    margin-left: 40px;
 }
 .ordernar-filtro select{
-    padding: 0 10px;
+    padding: 0 15px;
     background-color:#F9F9F9;
     margin-left: 10px;
 }
 #filtro-contas .table{
     margin: 50px 0;
+}
+#form-receber-conta{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+#form-receber-conta .form-grupo{
 }

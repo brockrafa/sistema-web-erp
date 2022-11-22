@@ -79,7 +79,7 @@
                         Quantidade
                         <small></small>
                     </label>
-                    <input type="number" id="quantidade_item_add" >
+                    <input type="number" id="quantidade_item_add" value="1">
                 </div>
                 <div class="grupo-botoes btn-right">
                     <button type="button" class="btn-default" onclick="adicionarItemContaReceber()">
@@ -133,14 +133,14 @@
                     </label>
                     <select required id="qtd-parcelas" name="qtd_parcelas" disabled></select>
                 </div>
-                <div class="form-grupo w-flex">
+                {{-- <div class="form-grupo w-flex"> 
                     <label for="data_primeira_parcela">
                         Data primeira parcela
                     </label>
                     <input disabled required type="date" name="data_primeira_parcela" id="data-primeira-parcela">
-                </div>
+                </div>--}}
                 <div class="form-grupo w-flex">
-                    <label for="data_vencimento">
+                    <label for="data_vencimento" id="label-data-vencimento">
                         Data de vencimento
                     </label>
                     <input required type="date" name="data_vencimento" id="data-vencimento">

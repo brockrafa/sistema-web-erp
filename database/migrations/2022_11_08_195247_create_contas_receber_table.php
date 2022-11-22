@@ -21,6 +21,7 @@ class CreateContasReceberTable extends Migration
             $table->integer('total_parcelas');
             $table->datetime('data_vencimento');
             $table->datetime('data_pagamento')->nullable();
+            $table->integer('status');
             $table->timestamps();
         });
     }

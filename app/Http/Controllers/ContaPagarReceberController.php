@@ -11,7 +11,82 @@ use Illuminate\Http\Request;
 class ContaPagarReceberController extends Controller
 {
     public function index(Request $request){
-        return view('app.conta.receber.index',['request'=>$request]);
+
+
+        $contas = ContasReceber::with(['venda']);
+        
+        $cliente = $request->get('nome_cliente');
+        $exibicao = $request->get('exibicao');
+        $status = $request->get('status');
+
+        $filtros = "data_vencimento between DATE_SUB(CURRENT_DATE,INTERVAL DAYOFMONTH(CURRENT_DATE)- 1 DAY) and LAST_DAY(CURRENT_DATE)";
+
+        if( $exibicao){
+            switch($exibicao){
+                case 1: 
+                    $filtros = "data_vencimento BETWEEN DATE_SUB( DATE_ADD(current_date(), INTERVAL 1 MONTH),INTERVAL DAYOFMONTH( DATE_ADD(current_date(), INTERVAL 1 MONTH))- 1 DAY) AND LAST_DAY(DATE_ADD(current_date(), INTERVAL 1 MONTH))";
+                    break;
+                case 7:
+                    $filtros = "data_vencimento BETWEEN CURRENT_DATE() AND DATE_ADD(current_date(), INTERVAL 7 DAY)";
+                    break;
+                case 15:
+                    $filtros = "data_vencimento BETWEEN CURRENT_DATE() AND DATE_ADD(current_date(), INTERVAL 15 DAY)";
+                    break;
+                case 90:
+                    $filtros = "1=1";
+                    break;
+            }
+        }
+
+        if($cliente){
+            $contas->whereHas('venda',function ($query) use ($request){
+                $query->whereHas('cliente',function($q) use ($request){
+                    $q->where('nome','like','%'.$request->get('nome_cliente').'%');
+                });
+            });
+        }
+
+        if($status){
+            switch($status){
+                case 91:
+                    $contas->whereNull('data_pagamento');
+                    break;
+                case 92:
+                    $contas->whereNotNull('data_pagamento');
+                    break;
+
+            }
+        }
+
+        
+        $contas = $contas->whereRaw($filtros)->orderBy('STATUS','ASC')->orderBy('DATA_VENCIMENTO','ASC')->paginate(15);
+
+        /* Filtrar pelo nome de cliente
+        $cliente = $request->get('nome_cliente');
+
+        
+        if($cliente){
+            $contasFiltrada = [];
+            foreach($contas as $conta){
+                $clientes = Cliente::where('nome','like','%'.$cliente.'%')->get();
+                foreach($clientes as $c){
+                    $vendas = Venda::where('cliente_id',$c->id)->get();
+                    foreach($vendas as $v){
+                        if($conta->venda_id == $v->id){
+                            array_push($contasFiltrada,$conta);
+                        }
+                    }
+                }
+            }
+            $contas = $contasFiltrada;
+        }*/
+        return view('app.conta.receber.index',[
+            'request'=>$request,
+            'contas'=>$contas,
+            'cliente' => $cliente,
+            'exibicao' => $exibicao,
+            'status' => $status
+        ]);
     }
 
     public function create(){
@@ -19,10 +94,6 @@ class ContaPagarReceberController extends Controller
     }
 
     public function store(Request $request){
-        echo '<pre>';
-        print_r($request->all());
-        dd(ContasReceber::find(1));
-        exit;
 
         $regras = [
             'valor_total_itens' => 'required | min:1'
@@ -31,37 +102,40 @@ class ContaPagarReceberController extends Controller
         $feedback = [
             'required' => '* O campo :attribute é obrigatório'
         ];
-        $request->validate($regras,$feedback);
 
         $var = $request->get('cliente');
         $cliente = explode('-',$var);
-        $cliente = Cliente::where('id',trim($cliente[0]))->where('nome',trim($cliente[1]))->first();
 
         $var = $request->get('usuario');
         $usuario = explode('-',$var);
+
+        if(!isset($cliente[1]) || !isset($usuario[1]) ){
+            return redirect()->route('contas.receber.create');
+        }
+
+        $cliente = Cliente::where('id',trim($cliente[0]))->where('nome',trim($cliente[1]))->first();
         $usuario = Usuario::where('id',trim($usuario[0]))->where('nome',trim($usuario[1]))->first();
+      
+        $request->validate($regras,$feedback);
         
         $venda = new Venda();
         $venda->cliente_id = $cliente->id;
         $venda->usuario_id = $usuario->id;
         $venda->valor_total = $request->get("valor_total_itens");
         $venda->meio_pagamento_id = $request->get("meio_pagamento");
-        $venda->qtd_parcelas = 1;
-        $venda->valor_parcelas = $request->get("valor_total_itens");
-
-        $parcelas = $request->get("qtd_parcelas") != "" ? explode('#', $request->get("qtd_parcelas")) : "";
-        if(!empty($parcelas) && count($parcelas) > 1){
-            $venda->qtd_parcelas = $parcelas[0];
-            $venda->valor_parcelas = $parcelas[1];
+        $venda->qtd_parcelas = $request->get("qtd_parcelas");
+        $venda->valor_parcelas = $request->get("valor_total_itens") / $request->get("qtd_parcelas");
+        $venda->data_primeira_parcela = $request->get("data_vencimento") ? $request->get("data_vencimento") : date('Y-m-d');
+        $venda->data_vencimento = $request->get("data_vencimento") ? $request->get("data_vencimento") : date('Y-m-d');
+        $venda->status_venda_id = 0;
+        if($venda->meio_pagamento_id != '901'){
+            $venda->data_pagamento = date('Y-m-d');
+            $venda->status_venda_id = 1;
         }
-
-        $venda->data_primeira_parcela = $request->get("data_primeira_parcela");
-        $venda->data_vencimento = $request->get("data_vencimento");
-        $venda->status_venda_id = 1;
         $venda->save();
         $idVenda = $venda->id;
         $this->adicionarItensVenda($request,$idVenda);
-
+        $this->adicionarParcelas($venda);
         return redirect()->route('contas.receber.index');
 
     }
@@ -81,5 +155,35 @@ class ContaPagarReceberController extends Controller
             $item->save();
         }
         return true;
+    }
+
+    private function adicionarParcelas($venda){
+        
+        $parcelas = $venda->qtd_parcelas;
+        $contas = [];
+        if($parcelas == 1 && $venda->meio_pagamento_id != '901'){
+            $contaReceber = new ContasReceber();
+            $contaReceber->venda_id = $venda->id;
+            $contaReceber->valor_receber = $venda->valor_parcelas;
+            $contaReceber->parcela_atual = 1;
+            $contaReceber->total_parcelas = $venda->qtd_parcelas;
+            $contaReceber->data_vencimento = $venda->data_vencimento;
+            $contaReceber->data_pagamento = $venda->data_vencimento;
+            $contaReceber->save();
+        }else{
+            for($i = 1; $i <= $parcelas;$i++){
+                $contaReceber = new ContasReceber();
+                $contaReceber->venda_id = $venda->id;
+                $contaReceber->valor_receber = $venda->valor_parcelas;
+                $contaReceber->parcela_atual = $i;
+                $contaReceber->total_parcelas = $venda->qtd_parcelas;
+                $contaReceber->data_vencimento = $venda->data_primeira_parcela;
+                if($i != 1){ 
+                    $contaReceber->data_vencimento = date('Y-m-d', strtotime($venda->data_primeira_parcela.' +' .($i-1). 'month'));
+                }
+                $contaReceber->save();
+            }
+        }
+        return 1;
     }
 }
