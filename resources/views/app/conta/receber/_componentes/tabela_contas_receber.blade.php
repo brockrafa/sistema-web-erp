@@ -13,7 +13,7 @@
         <tbody>
             @foreach ($contas as $conta)
                 
-                <tr id="cliente_1">
+                <tr id="conta_{{$conta->id}}">
                     <td>{{$conta->venda->cliente->nome}}</td>
                     <td>{{date('d/m/Y', strtotime($conta->data_vencimento)) }}</td>
                     <td>R$ {{ number_format($conta->valor_receber, 2, ',', '') }}</td>
@@ -23,8 +23,14 @@
                             <span class="status-table" style="color:white;background-color:rgb(42, 181, 0)">
                                 Conta Paga
                             </span>
-                        @else
+                        @endif
+                        @if(strtotime($conta->data_vencimento) < strtotime(date('Y-m-d')) && $conta->data_pagamento == null )
                             <span class="status-table" style="color:white;background-color:rgb(188, 0, 0)">
+                                Atrasado
+                            </span>
+                        @endif
+                        @if(strtotime($conta->data_vencimento) > strtotime(date('Y-m-d')) && $conta->data_pagamento == null)
+                            <span class="status-table" style="color:white;background-color:rgb(0, 122, 188)">
                                 Pendente
                             </span>
                         @endif
@@ -33,9 +39,11 @@
                         <button title="Visualizar conta" onclick="receberConta({{$conta->id}})" class="view">
                             <img src="{{ asset('icones/eye-solid.svg') }}" alt="">
                         </button>
-                        <button title="Receber conta" onclick="receberConta({{$conta->id}})" class="receber">
-                            <img src="{{ asset('icones/dollar.svg') }}" alt="">
-                        </button>
+                        @if ($conta->STATUS == 0)
+                            <button title="Receber conta" onclick="receberConta({{$conta->id}})" class="receber">
+                                <img src="{{ asset('icones/dollar.svg') }}" alt="">
+                            </button>
+                        @endif
                     </td>
                 </tr>
             

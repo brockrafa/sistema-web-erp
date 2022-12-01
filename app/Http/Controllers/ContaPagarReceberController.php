@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class ContaPagarReceberController extends Controller
 {
     public function index(Request $request){
-
+        
 
         $contas = ContasReceber::with(['venda']);
         
@@ -60,32 +60,16 @@ class ContaPagarReceberController extends Controller
 
         
         $contas = $contas->whereRaw($filtros)->orderBy('STATUS','ASC')->orderBy('DATA_VENCIMENTO','ASC')->paginate(15);
+        $msg = $request->get('msg');
 
-        /* Filtrar pelo nome de cliente
-        $cliente = $request->get('nome_cliente');
 
-        
-        if($cliente){
-            $contasFiltrada = [];
-            foreach($contas as $conta){
-                $clientes = Cliente::where('nome','like','%'.$cliente.'%')->get();
-                foreach($clientes as $c){
-                    $vendas = Venda::where('cliente_id',$c->id)->get();
-                    foreach($vendas as $v){
-                        if($conta->venda_id == $v->id){
-                            array_push($contasFiltrada,$conta);
-                        }
-                    }
-                }
-            }
-            $contas = $contasFiltrada;
-        }*/
         return view('app.conta.receber.index',[
             'request'=>$request,
             'contas'=>$contas,
             'cliente' => $cliente,
             'exibicao' => $exibicao,
-            'status' => $status
+            'status' => $status,
+            'msg'=>$msg
         ]);
     }
 
@@ -181,9 +165,41 @@ class ContaPagarReceberController extends Controller
                 if($i != 1){ 
                     $contaReceber->data_vencimento = date('Y-m-d', strtotime($venda->data_primeira_parcela.' +' .($i-1). 'month'));
                 }
+                $contaReceber->STATUS = 0;
                 $contaReceber->save();
             }
         }
+        return 1;
+    }
+
+    public function receive(int $id){
+        $conta = ContasReceber::with(['venda','venda.cliente'])->find($id);
+        $conta->data_vencimento = date('d/m/Y', strtotime($conta->data_vencimento));
+        return json_encode($conta);
+    }
+
+    public function receiveStore(Request $request){
+        $conta = ContasReceber::with(['venda','venda.cliente'])->find($request->get('id'));
+        $conta->data_pagamento = $request->data_pagamento;
+        $conta->valor_recebido = str_replace(',','.',$request->valor_pago);
+        $conta->valor_recebido = str_replace('R$','',$conta->valor_recebido);
+        $conta->STATUS = 1; 
+        if($request->get('decisao_conta')){
+            $this->recalcularParcelas($conta,$request);
+            dd("Recalcular parcela");
+        }
+        $conta->update();
+        return redirect()->route('contas.receber.index',['msg'=>'Conta recebida com sucesso!']);
+    }
+
+    private function recalcularParcelas($conta,Request $request){
+        $parcelas = $conta->qtd_parcelas;
+        if($request->get('decisao_conta') == 'manter'){
+            echo 'Manter esse mes aberto';
+        }else{
+            echo 'Passar para proximas';
+        }
+        dd($conta);
         return 1;
     }
 }

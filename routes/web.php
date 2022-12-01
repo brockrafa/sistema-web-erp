@@ -45,6 +45,8 @@ Route::middleware('controle.acesso')->prefix('app')->group(function(){
 
     Route::get('/contas/receber/create', [\App\Http\Controllers\ContaPagarReceberController::class,'create'])->name('contas.receber.create');
     Route::post('/contas/receber/store', [\App\Http\Controllers\ContaPagarReceberController::class,'store'])->name('contas.receber.store');
+    Route::get('/contas/receber/receive/{id}', [\App\Http\Controllers\ContaPagarReceberController::class,'receive'])->name('contas.receber.receive');
+    Route::post('/contas/receber/receive', [\App\Http\Controllers\ContaPagarReceberController::class,'receiveStore'])->name('contas.receber.receiveStore');
 
 
     // Configurações

@@ -556,6 +556,7 @@ class ComposerStaticInit589dcba09c63e54a63162d78ec6db9d1
         'App\\Mail\\RecuperacaoSenhaMail' => __DIR__ . '/../..' . '/app/Mail/RecuperacaoSenhaMail.php',
         'App\\Models\\Chamado' => __DIR__ . '/../..' . '/app/Models/Chamado.php',
         'App\\Models\\Cliente' => __DIR__ . '/../..' . '/app/Models/Cliente.php',
+        'App\\Models\\ContasReceber' => __DIR__ . '/../..' . '/app/Models/ContasReceber.php',
         'App\\Models\\DetalhesChamado' => __DIR__ . '/../..' . '/app/Models/DetalhesChamado.php',
         'App\\Models\\ItensVenda' => __DIR__ . '/../..' . '/app/Models/ItensVenda.php',
         'App\\Models\\RecuperarSenha' => __DIR__ . '/../..' . '/app/Models/RecuperarSenha.php',

@@ -31,6 +31,7 @@ return array(
     'App\\Mail\\RecuperacaoSenhaMail' => $baseDir . '/app/Mail/RecuperacaoSenhaMail.php',
     'App\\Models\\Chamado' => $baseDir . '/app/Models/Chamado.php',
     'App\\Models\\Cliente' => $baseDir . '/app/Models/Cliente.php',
+    'App\\Models\\ContasReceber' => $baseDir . '/app/Models/ContasReceber.php',
     'App\\Models\\DetalhesChamado' => $baseDir . '/app/Models/DetalhesChamado.php',
     'App\\Models\\ItensVenda' => $baseDir . '/app/Models/ItensVenda.php',
     'App\\Models\\RecuperarSenha' => $baseDir . '/app/Models/RecuperarSenha.php',

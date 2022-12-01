@@ -11,6 +11,7 @@
     </a>
 </section>
 
+
 @if (isset($msg) && $msg != '')
 <div class="alerta alerta-sucesso">
     <p>{{$msg}}</p>
@@ -75,7 +76,7 @@
 
 </section>
 
-<div id="modalReceberConta" class="modal-area">
+<div id="modalReceberConta" class="modal-area">1
     <div class="modal">
         <section class="modal-titulo">
             <img src="{{ asset('icones/dollar.svg') }}" alt="">
@@ -87,43 +88,79 @@
         </section>
 
         <section class="form-modal">
-            <form action="" method="POST" id="form-receber-conta">
+            <form method="POST" action="{{ route('contas.receber.receiveStore') }}" id="form-receber-conta">
                 @csrf
+
+               <input type="hidden" name="id"  id="id_conta">
+               <input type="hidden" name="decisao_conta"  id="decisao-conta">
     
-    
+               <div class="form-grupo">
+                    <label for="cliente_nome">Valor da parcela</label>
+                    <input type="text" disabled  id="cliente_nome">
+                </div>
+
                 <div class="form-grupo">
                     <label for="valor_parcela">Valor da parcela<small>{{ $errors->has('valor_parcela') ? $errors->first('valor_parcela') : ''}}</small></label>
-                    <input type="text" name="valor_parcela"  id="valor_parcela">
+                    <input type="text"  disabled id="valor_parcela">
                 </div>
     
                 <div class="form-grupo">
                     <label for="valor_pago">Valor pago<small>{{ $errors->has('valor_pago') ? $errors->first('valor_pago') : ''}}</small></label>
-                    <input type="text" name = "valor_pago"  id="valor_pago">
+                    <input type="text" required name = "valor_pago"  id="valor_pago">
                 </div>
 
                 <div class="form-grupo">
                     <label for="data_vencimento">Data vencimento<small>{{ $errors->has('data_vencimento') ? $errors->first('data_vencimento') : ''}}</small></label>
-                    <input type="date" name = "data_vencimento"  id="data_vencimento">
+                    <input type="datetime" disabled  id="data_vencimento">
                 </div>
 
                 <div class="form-grupo">
                     <label for="data_pagamento">Data pagamento<small>{{ $errors->has('data_pagamento') ? $errors->first('data_pagamento') : ''}}</small></label>
-                    <input type="date" name = "data_pagamento"  id="data_pagamento">
+                    <input type="date" required name ="data_pagamento"  id="data_pagamento">
                 </div>
     
                 <div class="grupo-botoes">
-                    <button onclick="voltar('cliente')" type="button">
-                        <img src="{{ asset('icones/angle-left-solid.svg') }}" alt="">
-                        <span>Voltar</span>
+                    <button onclick="fecharModal()" type="button">
+                        <span>Fechar</span>
                     </button>
-                    <button>
+                    <button id="btnFormReceberConta">
                         <img src="{{ asset('icones/dollar.svg') }}" alt="">
                         <span>Receber</span>
                     </button>
                 </div>
-    
             </form>
         </section>
+    </div>
+</div>
+
+<div id="modal-escolha" class="modal-escolha-area">
+    <div class="modal">
+        <section class="modal-titulo">
+            {{-- <img src="{{ asset('icones/dollar.svg') }}" alt=""> --}}
+            <p>Receber conta</p>
+        </section>
+
+        <section class="modal-btn-fechar">
+            <img onclick="fecharModal('escolha-')" src="{{ asset('icones/fechar-x.svg') }}" alt="">
+        </section>
+
+        <section class="secao-modal-confirmacao">
+            <div id="mensagem-modal-confirmacao">
+                <p>
+                    <span class="texto-alerta">O valor recebido é menor do que o valor da parcela atual.</span><br>
+                    Deseja manter a conta deste mês aberta ou passar a diferença para as proximas parcelas?
+                </p>
+            </div>
+            <div id="grupo-botoes-modal-confirmacao" class="grupo-botoes">
+                <button onclick="escolhaContaModal('manter')" type="button">
+                    <span>Manter conta aberta</span>
+                </button>
+                <button onclick="escolhaContaModal('passar')" type="button">
+                    <span>Passar para proximas parcelas</span>
+                </button>
+            </div>
+        </section>
+
     </div>
 </div>
 @endsection
