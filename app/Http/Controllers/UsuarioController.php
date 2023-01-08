@@ -16,7 +16,8 @@ class UsuarioController extends Controller
     public function index(Request $request)
     {
         $mensagem = $request->get('mensagem');
-        $usuarios = Usuario::paginate(5);
+        $id_empresa = $_SESSION['id_empresa'];
+        $usuarios = Usuario::where('id_empresa','=',$id_empresa)->paginate(5);
         return view('app.usuario.index',['usuarios'=>$usuarios,'mensagem'=>$mensagem]);
     }
 

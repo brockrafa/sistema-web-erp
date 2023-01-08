@@ -11,7 +11,8 @@ class ClienteController extends Controller
     private $paginacao = 10;
 
     public function index(Request $request){
-        $query = Cliente::where('id','!=','0');
+
+        $query = Cliente::where('id_empresa','=',$_SESSION['id_empresa']);
         $filters = '';
 
         if($request->input('_token') != ''){
@@ -64,6 +65,8 @@ class ClienteController extends Controller
                 'required' => '* O campo :attribute é obrigatório'
             ];
             $request->validate($regras,$feedback);
+
+            $request['id_empresa'] = $_SESSION['id_empresa'];
             Cliente::create($request->all());
             return redirect()->route('app.clientes',['msg'=>'Cliente adicionado com sucesso']);
         }
@@ -116,7 +119,10 @@ class ClienteController extends Controller
     }
 
     public function editar($id,$msg = ''){
-        $cliente = Cliente::find($id);
+        $cliente = Cliente::where('id_empresa', '=', $_SESSION['id_empresa'])->where('id', '=', $id)->get()->first();
+        if($cliente == null){
+            $msg = 'O cliente não existe';
+        }
         return view('app.cliente.adicionar',['cliente'=>$cliente,'msg'=>$msg]);
     }
 }

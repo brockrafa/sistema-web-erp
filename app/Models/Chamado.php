@@ -9,7 +9,7 @@ use App\Models\Cliente;
 class Chamado extends Model
 {
     use HasFactory;
-    public $fillable = ['id_cliente','data_abertura','titulo','setor','tipo_problema','prioridade','id_responsavel','id_status_chamado','contrato','problema'];
+    public $fillable = ['id_cliente','id_empresa','data_abertura','titulo','setor','tipo_problema','prioridade','id_responsavel','id_status_chamado','contrato','problema'];
    
     public function cliente(){
         return $this->hasOne(Cliente::class,'id','id_cliente');

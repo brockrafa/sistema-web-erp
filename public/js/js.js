@@ -98,7 +98,7 @@ $(document).ready(function (e){
 
 function removerAlerta(tempo = 5000){
     setTimeout(()=>{
-        //$('.alerta').fadeOut();
+        $('.alerta').fadeOut();
     },tempo)
 }
 

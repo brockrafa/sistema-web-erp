@@ -17,7 +17,7 @@ class ChamadoController extends Controller
 
     public function index(Request $request){
         
-        $query = Chamado::where('id','!=','0');
+        $query = Chamado::where('id_empresa','=',$_SESSION['id_empresa']);
 
         if($request->input('_token')){
             if($request->input('titulo') != ''){
@@ -82,19 +82,37 @@ class ChamadoController extends Controller
             ];
             $request->validate($regras,$feedback);
 
-            Chamado::create($request->all());
-            return redirect()->route('app.chamados',['msg'=>'Chamado aberto com sucesso']);
+            $chamado = $request->all();
+
+            $chamado['id_empresa'] = $_SESSION['id_empresa'];
+
+            Chamado::create($chamado);
+
+            $msg = [
+                'status'=>'sucesso',
+                'msg'=>'Chamado aberto com sucesso'
+            ];
+            return redirect()->route('app.chamados',['msg'=>$msg]);
         }
-        $clientes = Cliente::all();
+        $clientes = Cliente::where('id_empresa',$_SESSION['id_empresa'])->get();
         $status   = StatusChamado::all();
-        $usuarios   = Usuario::all();
+        $usuarios   = Usuario::where('id_empresa',$_SESSION['id_empresa'])->get();
         return view('app.chamado.adicionar',['clientes'=>$clientes,'status'=>$status,'usuarios'=>$usuarios]);
     }
 
     public function editar($id,Request $request){
         $msg = $request->get('msg');
-        $chamado = Chamado::find($id);
-        $usuarios = Usuario::all();
+        $chamado = Chamado::where('id_empresa', '=', $_SESSION['id_empresa'])->where('id', '=', $id)->get()->first();
+
+        if($chamado == null){
+            $msg = [
+                'status'=>'erro',
+                'msg'=>'O chamado não existe'
+            ];
+            return redirect()->route('app.chamados',['msg'=>$msg]);
+        }
+
+        $usuarios = Usuario::where('id_empresa', '=', $_SESSION['id_empresa'])->get();
         $status   = StatusChamado::all();
         return view('app.chamado.editar',['chamado'=>$chamado,'usuarios'=>$usuarios,'status'=>$status,'msg'=>$msg]);
     }
@@ -149,6 +167,10 @@ class ChamadoController extends Controller
         $chamado->id_status_chamado = $request->input('id_status_chamado');
         $chamado->updated_at = date('Y-m-d H:i:s');
         $chamado->save();
-        return redirect()->route('app.chamados',['msg'=>'Chamado atualizado com sucesso']);
+        $msg = [
+            'status'=>'sucesso',
+            'msg'=>'Chamado atualizado com sucesso'
+        ];
+        return redirect()->route('app.chamados',['msg'=>$msg]);
     }
 }

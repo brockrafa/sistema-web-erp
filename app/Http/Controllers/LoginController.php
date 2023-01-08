@@ -28,6 +28,7 @@ class LoginController extends Controller
             $_SESSION['email'] = $usuario->email;
             $_SESSION['permissao'] = $usuario->permissao;
             $_SESSION['nome'] = $usuario->nome;
+            $_SESSION['id_empresa'] = $usuario->id_empresa;
             // Definir se menu irá iniciar aberto ou fechado
             if(!isset($_SESSION['menu'])){
                 $_SESSION['menu'] = 0;

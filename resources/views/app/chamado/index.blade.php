@@ -12,9 +12,9 @@
 </section>
 
 
-@if (isset($msg) && $msg !='')
-<div class="alerta alerta-sucesso">
-    {{$msg}}
+@if (isset($msg) )
+<div class="alerta alerta-{{$msg['status']}}">
+    {{$msg['msg']}}
 </div>
 @endif
 @if ($errors->has('cliente'))

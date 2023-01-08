@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Cliente extends Model
 {
     use HasFactory;
-    public $fillable = ['documento','nome','cep','cidade','bairro','sexo','data_nascimento','uf','logradouro'];
+    public $fillable = ['documento','id_empresa','nome','cep','cidade','bairro','sexo','data_nascimento','uf','logradouro'];
 }
