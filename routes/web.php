@@ -16,6 +16,8 @@ Route::post('/login/password/recovery/store', [\App\Http\Controllers\Recuperacao
 Route::middleware('controle.acesso')->prefix('app')->group(function(){
 
     Route::get('/home', [\App\Http\Controllers\AppController::class,'index'])->name('app.home');
+    Route::get('/teste', [\App\Http\Controllers\AppController::class,'teste'])->name('app.teste');
+
     Route::get('/menu/{status?}', [\App\Http\Controllers\AppController::class,'menuState'])->name('app.menu');
 
     // Chamados

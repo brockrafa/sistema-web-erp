@@ -29,7 +29,7 @@
                                 Atrasado
                             </span>
                         @endif
-                        @if(strtotime($conta->data_vencimento) > strtotime(date('Y-m-d')) && $conta->data_pagamento == null)
+                        @if(strtotime($conta->data_vencimento) >= strtotime(date('Y-m-d')) && $conta->data_pagamento == null)
                             <span class="status-table" style="color:white;background-color:rgb(0, 122, 188)">
                                 Pendente
                             </span>
@@ -39,7 +39,7 @@
                         <button title="Visualizar conta" onclick="receberConta({{$conta->id}})" class="view">
                             <img src="{{ asset('icones/eye-solid.svg') }}" alt="">
                         </button>
-                        @if ($conta->STATUS == 0)
+                        @if ($conta->status == 0)
                             <button title="Receber conta" onclick="receberConta({{$conta->id}})" class="receber">
                                 <img src="{{ asset('icones/dollar.svg') }}" alt="">
                             </button>

@@ -16,8 +16,9 @@ class ChamadoController extends Controller
     private $paginate = 10;
 
     public function index(Request $request){
-        
-        $query = Chamado::where('id_empresa','=',$_SESSION['id_empresa']);
+        $idEmpresa = $_SESSION['id_empresa'];
+
+        $query = Chamado::where('id_empresa',$idEmpresa);
 
         if($request->input('_token')){
             if($request->input('titulo') != ''){
@@ -59,7 +60,7 @@ class ChamadoController extends Controller
         $request->request->remove('msg');
         $status = StatusChamado::all();
         $chamados = $query->orderBy('id_status_chamado', 'asc')->paginate($this->paginate); 
-        $usuarios = Usuario::all();
+        $usuarios = Usuario::where('id_empresa',$idEmpresa)->get();
         return view('app.chamado.index',['chamados'=>$chamados,'msg'=>$msg,'request'=>$request,'usuarios'=>$usuarios,'status'=>$status]);
     }
 
@@ -72,9 +73,7 @@ class ChamadoController extends Controller
                 'tipo_problema' => 'required',
                 'prioridade' => 'required',
                 'id_status_chamado' => 'required',
-                'contrato' => 'required',
-                'titulo' => 'required',
-                'problema' => 'required'
+                'titulo' => 'required'
             ];
 
             $feedback = [
@@ -102,7 +101,7 @@ class ChamadoController extends Controller
 
     public function editar($id,Request $request){
         $msg = $request->get('msg');
-        $chamado = Chamado::where('id_empresa', '=', $_SESSION['id_empresa'])->where('id', '=', $id)->get()->first();
+        $chamado = Chamado::where('id_empresa', $_SESSION['id_empresa'])->where('id',$id)->get()->first();
 
         if($chamado == null){
             $msg = [
@@ -112,13 +111,17 @@ class ChamadoController extends Controller
             return redirect()->route('app.chamados',['msg'=>$msg]);
         }
 
-        $usuarios = Usuario::where('id_empresa', '=', $_SESSION['id_empresa'])->get();
+        $usuarios = Usuario::where('id_empresa', $_SESSION['id_empresa'])->get();
         $status   = StatusChamado::all();
         return view('app.chamado.editar',['chamado'=>$chamado,'usuarios'=>$usuarios,'status'=>$status,'msg'=>$msg]);
     }
 
     public function armazenar(Request $request){
-        $chamado = Chamado::find($request->input('id'));
+        $idChamado = $request->input('id');
+        $chamado = Chamado::where('id',$idChamado)->where('id_empresa',$_SESSION['id_empresa'])->first();
+        if($chamado == null){
+            return redirect()->route('app.chamados',['msg'=>['status'=>'erro','msg'=>'O chamado não existe ou não pertence a sua empresa']]);
+        }
         $alteracoes = [];
 
         // VERIFICAÇÃO PARA VER SE HOUVE ALTERAÇÃO EM ALGUM CAMPO IMPORTANTE DO CHAMADO

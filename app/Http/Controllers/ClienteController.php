@@ -12,7 +12,7 @@ class ClienteController extends Controller
 
     public function index(Request $request){
 
-        $query = Cliente::where('id_empresa','=',$_SESSION['id_empresa']);
+        $query = Cliente::where('id_empresa',$_SESSION['id_empresa']);
         $filters = '';
 
         if($request->input('_token') != ''){
@@ -71,23 +71,28 @@ class ClienteController extends Controller
             return redirect()->route('app.clientes',['msg'=>'Cliente adicionado com sucesso']);
         }
         else if($request->isMethod('get') && $request->input('id') != '') {
-            $cliente = Cliente::find($request->input('id'));
+            $cliente = Cliente::where('id',$request->input('id'))->where('id_empresa',$_SESSION['id_empresa']);
+            if($cliente == null){
+                return redirect()->route('app.clientes',['msg'=>'Cliente não cadastrado']);
+            }
+            $request['id_empresa'] = $_SESSION['id_empresa'];
+            $request->request->remove('_token');
             $update = $cliente->update($request->all());
 
             $feedback = 'Cliente atualizado com sucesso!';
-            $request->request->remove('_token');
             return redirect()->route('app.clientes',['msg'=>$feedback]);
         }
         return view('app.cliente.adicionar');
     }
 
     public function salvarCliente(Request $request){
+        $request['id_empresa'] = $_SESSION['id_empresa'];
         Cliente::create($request->all());
         return redirect()->route('app.clientes',['erro'=>0]);
     }
 
     public function getTable(Request $request){
-        $query = Cliente::where('id','!=','0');
+        $query = Cliente::where('id_empresa','=',$_SESSION['id_empresa']);
 
         if($request->get('cliente') != ''){
             $query->where('nome','like','%'.$request->get('cliente').'%');
@@ -111,7 +116,7 @@ class ClienteController extends Controller
 
     public function delete($id){
         try{
-            Cliente::find($id)->delete();
+            Cliente::where('id',$id)->where('id_empresa',$_SESSION['id_empresa'])->delete();
             return true;
         }catch(\Illuminate\Database\QueryException $e){
             return 0;

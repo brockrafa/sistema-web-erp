@@ -22,7 +22,6 @@
                         <option value="{{$cliente->id}}" {{ old('id_cliente') && $cliente->id == old('id_cliente') ? 'selected' : '' }} >{{$cliente->nome}}</option>
                     @endforeach
                 </select>
-                <button type="button" class="flash-add"><img src="/icones/add.svg" alt=""></button>
             </div>
 
             <div class="form-grupo">
@@ -75,11 +74,6 @@
                         <option value="{{ $state->id }}" {{ old('id_status_chamado') && $state->id == old('id_status_chamado') ? 'selected' : '' }}>{{ $state->status }}</option>
                     @endforeach
                 </select>
-            </div>
-
-            <div class="form-grupo">
-                <label for="contrato">Número contrato<small>{{ $errors->has('contrato') ? $errors->first('contrato') : ''}}</small></label>
-                <input type="number"  value="{{old('contrato')}}" name="contrato" id="contrato">
             </div>
 
             <div class="form-grupo">

@@ -19,19 +19,24 @@
                     <td>{{$usuario->email}}</td>
                     <td>{{$usuario->permissao}}</td>
                     <td>
-                        <button onclick="document.getElementById('form_usuario_id_{{$usuario->id}}_edit').submit()" class="view">
-                            <form id="form_usuario_id_{{$usuario->id}}_edit" action="{{ route('usuario.edit',['usuario'=>$usuario->id])}}" method="get">
-                                @csrf
-                            </form>
-                            <img src="{{ asset('icones/lapis.svg') }}" alt="">
-                        </button>
-                        <button  onclick="document.getElementById('form_usuario_id_{{$usuario->id}}_delete').submit()" class="delete">
-                            <form id="form_usuario_id_{{$usuario->id}}_delete" action="{{ route('usuario.destroy',['usuario'=>$usuario->id])}}" method="post">
-                                @csrf
-                                @method('DELETE')
-                            </form>
-                            <img src="{{ asset('icones/lixeira.svg') }}" alt="">
-                        </button>
+                        @if($permissao == 2)
+                            <button onclick="document.getElementById('form_usuario_id_{{$usuario->id}}_edit').submit()" class="view">
+                                <form id="form_usuario_id_{{$usuario->id}}_edit" action="{{ route('usuario.edit',['usuario'=>$usuario->id])}}" method="get">
+                                    @csrf
+                                </form>
+                                <img src="{{ asset('icones/lapis.svg') }}" alt="">
+                            </button>
+                        
+                            <button  onclick="document.getElementById('form_usuario_id_{{$usuario->id}}_delete').submit()" class="delete">
+                                <form id="form_usuario_id_{{$usuario->id}}_delete" action="{{ route('usuario.destroy',['usuario'=>$usuario->id])}}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                                <img src="{{ asset('icones/lixeira.svg') }}" alt="">
+                            </button>
+                        @else
+                            Usuario sem permissões
+                        @endif
                     </td>
                 </tr>
            

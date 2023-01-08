@@ -12,9 +12,7 @@ class ContaPagarReceberController extends Controller
 {
     public function index(Request $request){
         
-
-        $contas = ContasReceber::with(['venda']);
-        
+        $contas = ContasReceber::with(['venda'])->where('id_empresa',$_SESSION['id_empresa']);
         $cliente = $request->get('nome_cliente');
         $exibicao = $request->get('exibicao');
         $status = $request->get('status');
@@ -149,10 +147,13 @@ class ContaPagarReceberController extends Controller
             $contaReceber = new ContasReceber();
             $contaReceber->venda_id = $venda->id;
             $contaReceber->valor_receber = $venda->valor_parcelas;
+            $contaReceber->valor_recebido = $venda->valor_parcelas;
             $contaReceber->parcela_atual = 1;
             $contaReceber->total_parcelas = $venda->qtd_parcelas;
             $contaReceber->data_vencimento = $venda->data_vencimento;
             $contaReceber->data_pagamento = $venda->data_vencimento;
+            $contaReceber->status = $venda->status_venda_id;
+            $contaReceber->id_empresa = $_SESSION['id_empresa'];
             $contaReceber->save();
         }else{
             for($i = 1; $i <= $parcelas;$i++){
@@ -166,6 +167,7 @@ class ContaPagarReceberController extends Controller
                     $contaReceber->data_vencimento = date('Y-m-d', strtotime($venda->data_primeira_parcela.' +' .($i-1). 'month'));
                 }
                 $contaReceber->STATUS = 0;
+                $contaReceber->id_empresa = $_SESSION['id_empresa'];
                 $contaReceber->save();
             }
         }

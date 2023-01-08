@@ -21,7 +21,8 @@ class AppController extends Controller
     }
 
     public function teste(Request $request){
-        print_r($request->all());
+        return view('app.teste');
+
     }
 
     public function menuState(Request $request,$status){
@@ -34,12 +35,12 @@ class AppController extends Controller
 
     public function clientesList(Request $request){
         $nome = $request->get('nome');
-        $clientes = Cliente::where("nome",'like',"%$nome%")->get();
+        $clientes = Cliente::where("nome",'like',"%$nome%")->where('id_empresa',$_SESSION['id_empresa'])->get();
         return json_encode($clientes);
     }
     public function usuariosList(Request $request){
         $nome = $request->get('nome');
-        $usuarios = Usuario::where("nome",'like',"%$nome%")->get();
+        $usuarios = Usuario::where("nome",'like',"%$nome%")->where('id_empresa',$_SESSION['id_empresa'])->get();
         return json_encode($usuarios);
     }
 }

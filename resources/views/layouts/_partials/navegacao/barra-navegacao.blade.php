@@ -83,6 +83,13 @@
                     <span>Sair</span>
                 </a>
             </li>
+
+            <li>
+                <a href="{{ route('app.teste')}}">
+                    <img src="{{ asset('icones/config.svg') }}" alt="">
+                    <span>Testes</span>
+                </a>
+            </li>
         </ul>
     </div>
     <div class="footer-barra-navegacao">

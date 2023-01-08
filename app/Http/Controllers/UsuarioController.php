@@ -18,7 +18,8 @@ class UsuarioController extends Controller
         $mensagem = $request->get('mensagem');
         $id_empresa = $_SESSION['id_empresa'];
         $usuarios = Usuario::where('id_empresa','=',$id_empresa)->paginate(5);
-        return view('app.usuario.index',['usuarios'=>$usuarios,'mensagem'=>$mensagem]);
+        $permissao = $_SESSION['permissao'];
+        return view('app.usuario.index',['usuarios'=>$usuarios,'mensagem'=>$mensagem,'permissao'=>$permissao]);
     }
 
     /**
@@ -45,8 +46,9 @@ class UsuarioController extends Controller
         $usuario->email = $request->get('email');
         $usuario->senha = md5($request->get('senha'));
         $usuario->permissao = $request->get('permissao');
+        $usuario->id_empresa = $_SESSION['id_empresa'];
         $usuario->save();
-        $mensagem = 'Usuario criado com sucesso';
+        $mensagem = ['msg'=>'Usuario criado com sucesso','status'=>'sucesso'];
         return redirect()->route('usuario.index',['mensagem'=>$mensagem]);
     }
 
@@ -69,6 +71,10 @@ class UsuarioController extends Controller
      */
     public function edit(Usuario $usuario)
     {
+        if($usuario->id_empresa != $_SESSION['id_empresa']){
+            $mensagem = ['msg'=>'Usuario criado com sucesso','status'=>'sucesso'];
+            return redirect()->route('usuario.index',['mensagem'=> $mensagem]);
+        }
         return view('app.usuario.editar_usuario',['usuario'=>$usuario]);
     }
 
@@ -81,13 +87,16 @@ class UsuarioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = Usuario::find($id);
+        $user = Usuario::where('id',$id)->where('id_empresa',$_SESSION['id_empresa'])->first();
+        if(!$user){
+            return redirect()->route('usuario.index',['mensagem'=>"Usuario não cadastrado"]);
+        }
         $user->permissao = $request->get('permissao');
         $user->nome = $request->get('nome');
         $user->email = $request->get('email');
-        $user->senha = md5($request->get('senha'));
+        //$user->senha = md5($request->get('senha'));
         $user->update();
-        $mensagem = 'Usuario modificado com sucesso';
+        $mensagem = ['msg'=>'Usuario modificado com sucesso','status'=>'sucesso'];
         return redirect()->route('usuario.index',['mensagem'=>$mensagem]);
     }
 
@@ -99,8 +108,17 @@ class UsuarioController extends Controller
      */
     public function destroy(Usuario $usuario)
     {
-        $usuario->delete();
-        $mensagem = 'Usuario deletado com sucesso';
-        return redirect()->route('usuario.index',['mensagem'=>$mensagem]);
+        try{
+            if($usuario->id == $_SESSION['id']){
+                $mensagem = ['msg'=>'Você não pode deletar o usuario que está logado','status'=>'erro'];
+                return redirect()->route('usuario.index',['mensagem'=>$mensagem]);
+            }
+            $usuario->delete();
+            $mensagem = ['msg'=>'Usuario deletado com sucesso','status'=>'sucesso'];
+            return redirect()->route('usuario.index',['mensagem'=>$mensagem]);
+        }catch(\Illuminate\Database\QueryException $e){
+            $mensagem = ['msg'=>'Usuario não pode ser deletado, pois existem chamados atrelados a ele','status'=>'erro'];
+            return redirect()->route('usuario.index',['mensagem'=>$mensagem]);
+        }
     }
 }

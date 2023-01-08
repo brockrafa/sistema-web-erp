@@ -49,10 +49,10 @@ input[type='date'],select{
     padding: 25px;
 }
 .header-barra-navegacao img{
-    width: 80px;
+    width: 60px;
     border-radius: 50%;
     margin-top: 10px;
-    min-height: 80px;
+    min-height: 60px;
 }
 .header-barra-navegacao p{
     margin-top: 25px;
@@ -60,7 +60,7 @@ input[type='date'],select{
 }
 .body-barra-navegacao{
     flex-grow: 1;
-    margin-top: 30px;
+    margin-top: 5px;
 }
 .body-barra-navegacao li{
     padding: 0 0px;
@@ -121,7 +121,7 @@ input[type='date'],select{
 }
 .footer-barra-navegacao{
     text-align: center;
-    padding: 20px;
+    padding: 10px 20px;
 }
 .actived{
     background-color: #5000a0fd;

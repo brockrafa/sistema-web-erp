@@ -72,7 +72,7 @@
                         Valor do item
                         <small></small>
                     </label>
-                    <input type="text" id="valor_item_add">
+                    <input type="number" id="valor_item_add">
                 </div>
                 <div class="form-grupo w-flex">
                     <label for="quantidade_item_add">
