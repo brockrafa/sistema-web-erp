@@ -69,6 +69,7 @@ function selectedOption(id,nome,elemento){
     $("#"+elemento).after(obj)
     $('#'+elemento).fadeOut()
     $('#'+elemento+'-input').val(id+" - " +nome)
+    $('#'+elemento+'-input-hiden').val(id+" - " +nome)
 }
 
 function limparSelectLista(elemento){

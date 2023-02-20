@@ -19,8 +19,9 @@
             <div class="form-section">
 
                 <div class="form-grupo lista-autocomplete-input-teste">
-                    <label for="lista-clientes-input">Cliente<small></small></label>
-                    <input value="{{old('cliente')}}" required autocomplete="off" name="cliente"  onkeyup="verificaCampo('lista-clientes',true)" class="lista-autocomplete-input"  id="lista-clientes-input">
+                    <label for="lista-clientes-input">Cliente<small>{{ $errors->has('cliente') ? $errors->first('cliente') : ''}}</small></label>
+                    <input value="{{old('cliente')}}" required autocomplete="off" onkeyup="verificaCampo('lista-clientes',true)" class="lista-autocomplete-input"  id="lista-clientes-input">
+                    <input name="cliente" type="hidden" id="lista-clientes-input-hiden">
                     <img id="autoselect-arrow-down-lista-clientes"  class="autoselect-arrow-down" src="/icones/arrow-down.svg" alt="">
                     <div id="lista-clientes" class="lista-autocomplete">
                         <span>Digite o nome de um cliente</span>
@@ -47,9 +48,7 @@
                         Usuario responsavel
                         <small></small>
                     </label>
-                    <input value="{{old('usuario')}}" required autocomplete="off" name="usuario"  onkeyup="verificaCampo('lista-usuarios',true)" class="lista-autocomplete-input" id="lista-usuarios-input">
-                    <img id="autoselect-arrow-down-lista-usuarios" class="autoselect-arrow-down" src="/icones/arrow-down.svg" alt="">
-                    <div id="lista-usuarios" class="lista-autocomplete"></div>
+                    <input value="{{$_SESSION['nome'] }}" required disabled  onkeyup="verificaCampo('lista-usuarios',true)" class="lista-autocomplete-input" id="lista-usuarios-input">
                 </div>
             </div>
         </section>

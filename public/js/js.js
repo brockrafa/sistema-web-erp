@@ -47,7 +47,10 @@ $(document).ready(function (e){
         let mudancaAno = false;
 
         let dia = ("0" + data.getDate()).slice(-2);
-        let mes = data.getMonth() + 1
+        let mes = (data.getMonth() + 1).toString()
+        if(mes.length == 1){
+            mes = "0" + mes
+        }
         let dataHoje = data.getFullYear()+"-"+(mes)+"-"+(dia);
         dataAtual = dataHoje
         let mesProx  = '01'
@@ -217,7 +220,7 @@ function atualizaPagamento(valor){
     $('#label-data-vencimento').html("Data pagamento")
     $('#data-vencimento').val(dataAtual)
 
-    if( (formaPagamento == CARTAO_CREDITO || formaPagamento == DINHEIRO_PARCELADO) && valor > 0){
+    if( (formaPagamento == DINHEIRO_PARCELADO) && valor > 0){
         if(formaPagamento == DINHEIRO_PARCELADO){
             $('#label-data-vencimento').html("Data vencimento primeira parcela")
             $('#data-vencimento').removeAttr('disabled')
@@ -225,7 +228,7 @@ function atualizaPagamento(valor){
         }
         for(i = 1;i<=10;i++){
             let parc = valor/i;
-            let elemento = '<option value="'+i+'">'+i+'x R$ '+parc.toFixed(3)+', sem juros</option>'
+            let elemento = '<option value="'+i+'">'+i+'x R$ '+parc.toFixed(2)+', sem juros</option>'
             let tr = $(elemento);
             $("#qtd-parcelas").append(tr);
         }
@@ -337,21 +340,28 @@ function listaUsuarios(valor,elemento){
         });
     })
 }
-
+let valor
 // -------------- Modais funcionamento 
 function receberConta(id){
     window.scrollTo(0, 0);
 
     let data = new Date();
     let dia = ("0" + data.getDate()).slice(-2);
-    let mes = data.getMonth() + 1
+    let mes = (data.getMonth() + 1).toString()
+   
+    if(mes.length == 1){
+        mes = "0" + mes
+    }
+    
     let dataHoje = data.getFullYear()+"-"+(mes)+"-"+(dia);
-
+      
+    console.log(dataHoje)
     $.get('/app/contas/receber/receive/'+id,function (data){
         let dados = JSON.parse(data)
         $('#id_conta').val(dados.id)
-        $('#valor_parcela').val('R$ '+dados.valor_receber)
-        $('#valor_pago').val(dados.valor_receber)
+        $('#valor_parcela').val('R$ '+dados.valor_receber.toFixed(2))
+        valor = dados.valor_receber
+        $('#valor_pago').val(dados.valor_receber.toFixed(2))
         $('#data_vencimento').val(dados.data_vencimento)
         $('#cliente_nome').val(dados.venda.cliente.nome)
         $('#data_pagamento').val(dataHoje)
