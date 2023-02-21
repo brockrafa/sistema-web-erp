@@ -76,33 +76,29 @@ class ContaPagarReceberController extends Controller
     }
 
     public function store(Request $request){
-
         $regras = [
-            'valor_total_itens' => 'required | min:1'
+            'valor_total_itens' => 'required | min:1',
+            'cliente'=>'required'
         ];
 
         $feedback = [
             'required' => '* O campo :attribute é obrigatório'
         ];
 
+        $request->validate($regras,$feedback);
         $var = $request->get('cliente');
         $cliente = explode('-',$var);
 
-        $var = $request->get('usuario');
-        $usuario = explode('-',$var);
 
-        if(!isset($cliente[1]) || !isset($usuario[1]) ){
+        if(!isset($cliente[1]) ){
             return redirect()->route('contas.receber.create');
         }
 
         $cliente = Cliente::where('id',trim($cliente[0]))->where('nome',trim($cliente[1]))->first();
-        $usuario = Usuario::where('id',trim($usuario[0]))->where('nome',trim($usuario[1]))->first();
-      
-        $request->validate($regras,$feedback);
         
         $venda = new Venda();
         $venda->cliente_id = $cliente->id;
-        $venda->usuario_id = $usuario->id;
+        $venda->usuario_id = $_SESSION['id'];
         $venda->valor_total = $request->get("valor_total_itens");
         $venda->meio_pagamento_id = $request->get("meio_pagamento");
         $venda->qtd_parcelas = $request->get("qtd_parcelas");

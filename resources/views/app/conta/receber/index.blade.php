@@ -76,7 +76,7 @@
 
 </section>
 
-<div id="modalReceberConta" class="modal-area">1
+<div id="modalReceberConta" class="modal-area">
     <div class="modal">
         <section class="modal-titulo">
             <img src="{{ asset('icones/dollar.svg') }}" alt="">
@@ -95,7 +95,7 @@
                <input type="hidden" name="decisao_conta"  id="decisao-conta">
     
                <div class="form-grupo">
-                    <label for="cliente_nome">Valor da parcela</label>
+                    <label for="cliente_nome">Nome cliente</label>
                     <input type="text" disabled  id="cliente_nome">
                 </div>
 
