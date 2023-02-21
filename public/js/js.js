@@ -87,7 +87,7 @@ $(document).ready(function (e){
         }
 
     //Evento de click para fechar modal
-    $('.modal-area').click( function(e) {
+    $('.modal-area').mousedown( function(e) {
         let modal = document.querySelector('.modal')
         var fora = !modal.contains(e.target);
         if (fora){ $(".modal-area").hide();}
