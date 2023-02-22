@@ -5,18 +5,45 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cliente;
 use App\Models\Usuario;
+use App\Repositories\ClienteRepository;
+
 
 class ClienteApiController extends ControllerApi
 {
+    public function __construct(Request $request,Cliente $cliente) {
+        parent::__construct($request);
+        $this->cliente = $cliente;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $clientes = Cliente::where('id_empresa',$this->usuario->id_empresa)->get();
-        return response()->json(['clientes'=>$clientes],200);
+
+        $clienteRepository = new ClienteRepository($this->cliente);
+        if($request->has('filtro')){
+            $clienteRepository->filtro($request->get('filtro'));
+        }
+
+        if($request->has('atributos')){
+            $clienteRepository->selectAtributtes($request->get("atributos"));
+        }
+
+        if($request->has('isNull')){
+            $this->cliente = $this->cliente->whereNull($request->get('isNull'));
+        }
+
+        if($request->has('isNotNull')){
+            $this->cliente = $this->cliente->whereNotNull($request->get('isNotNull'));
+        }
+
+        $clientes = $clienteRepository->getResults($this->usuario->id_empresa);
+
+        $clientes = count($clientes) > 0 ? $clientes : 'Nenhum cliente encontrado';
+
+        return response()->json($clientes,200);
     }
 
     /**
@@ -36,7 +63,7 @@ class ClienteApiController extends ControllerApi
         $algoritmo = 'AES-256-CBC';
         $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($algoritmo));
         $validade = time();
-        $validade += 2 * 60;
+        $validade += 60 * 60;
 
 
         $data = [
@@ -80,7 +107,10 @@ class ClienteApiController extends ControllerApi
      */
     public function show($id)
     {
-        //
+        $cliente = $this->cliente->find($id);
+
+        $cliente = $cliente ? $cliente : ['Status' => 'Nenhum cliente encontrado'];
+        return response()->json($cliente,200);
     }
 
     /**
