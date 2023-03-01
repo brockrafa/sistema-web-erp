@@ -30,7 +30,7 @@ class AppController extends Controller
     }
 
     public function fallback(Request $request){
-        return redirect()->route('login.index');
+        return redirect()->route('app.home');
     }
 
     public function clientesList(Request $request){

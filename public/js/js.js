@@ -260,6 +260,15 @@ function deleteItemContaReceber(id,valorTotal){
     atualizaPagamento(valor)
 }
 
+function finalizarNovaConta(form,e){
+    if($('#lista-clientes-input-hiden').val() == ''){
+        e.preventDefault()
+        $('#avisoInputClienteNovaContaReceber').html("*Por favor selecione um cliente valido")
+        return window.scrollTo(0, 10)
+    }
+}
+
+
 //------------------------------------------ Requisições para back end ---------------------------------//
 
 function loadTableClientes(){

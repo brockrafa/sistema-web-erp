@@ -41,6 +41,7 @@ function comboBoxList(elemento,hidden){
 function verificaCampo(elemento,hidden){
     let inp = document.getElementById(elemento+'-input')
     let con = inp.value.length
+    $('#'+elemento+'-input-hiden').val('')
     if($('#icone-loading-select').length < 1){
         $("#"+elemento).after('<img id="icone-loading-select" src="/imagens/loading-redondo.gif" alt="">')
         $('#autoselect-arrow-down-'+elemento).remove()

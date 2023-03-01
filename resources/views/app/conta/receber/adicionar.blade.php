@@ -8,7 +8,7 @@
         </h4>
     </section>
 
-    <form action="{{ route('contas.receber.store') }}" method="POST">
+    <form id="modalNovaContaReceber" action="{{ route('contas.receber.store') }}" method="POST">
         @csrf
 
         <section class="body-secao">
@@ -19,9 +19,11 @@
             <div class="form-section">
 
                 <div class="form-grupo lista-autocomplete-input-teste">
-                    <label for="lista-clientes-input">Cliente<small>{{ $errors->has('cliente') ? $errors->first('cliente') : ''}}</small></label>
+                    <label for="lista-clientes-input">Cliente<small id="avisoInputClienteNovaContaReceber">{{ $errors->has('cliente') ? $errors->first('cliente') : ''}}</small></label>
+
                     <input value="{{old('cliente')}}" required autocomplete="off" onkeyup="verificaCampo('lista-clientes',true)" class="lista-autocomplete-input"  id="lista-clientes-input">
                     <input name="cliente" type="hidden" id="lista-clientes-input-hiden">
+
                     <img id="autoselect-arrow-down-lista-clientes"  class="autoselect-arrow-down" src="/icones/arrow-down.svg" alt="">
                     <div id="lista-clientes" class="lista-autocomplete">
                         <span>Digite o nome de um cliente</span>
@@ -149,7 +151,7 @@
                         <img src="{{ asset('icones/angle-left-solid.svg') }}" alt="">
                         <span>Voltar</span>
                     </button>
-                    <button>
+                    <button onclick="finalizarNovaConta('modalNovaContaReceber',event)">
                         <img src="{{ asset('icones/save.svg') }}" alt="">
                         <span>Finalizar conta</span>
                     </button>
