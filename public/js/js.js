@@ -89,15 +89,23 @@ $(document).ready(function (e){
             })
         }
 
-    //Evento de click para fechar modal
+    /*Evento de click para fechar modal
     $('.modal-area').mousedown( function(e) {
-        let modal = document.querySelector('.modal')
+        let modal = document.querySelector('#modal')
         var fora = !modal.contains(e.target);
+        console.log(e.target)
         if (fora){ $(".modal-area").hide();}
-    })
+    })*/
 
         
 })
+
+function fecharModais(mod,e){
+    let modal = document.querySelector('#modal-'+mod)
+    var fora = !modal.contains(e.target);
+    if (fora){ $("#modal-area-"+mod).hide();}
+}
+
 
 function removerAlerta(tempo = 5000){
     setTimeout(()=>{
@@ -351,61 +359,6 @@ function listaUsuarios(valor,elemento){
 }
 let valor
 // -------------- Modais funcionamento 
-function receberConta(id){
-    window.scrollTo(0, 0);
-
-    let data = new Date();
-    let dia = ("0" + data.getDate()).slice(-2);
-    let mes = (data.getMonth() + 1).toString()
-   
-    if(mes.length == 1){
-        mes = "0" + mes
-    }
-    
-    let dataHoje = data.getFullYear()+"-"+(mes)+"-"+(dia);
-      
-    console.log(dataHoje)
-    $.get('/app/contas/receber/receive/'+id,function (data){
-        let dados = JSON.parse(data)
-        $('#id_conta').val(dados.id)
-        $('#valor_parcela').val('R$ '+dados.valor_receber.toFixed(2))
-        valor = dados.valor_receber
-        $('#valor_pago').val(dados.valor_receber.toFixed(2))
-        $('#data_vencimento').val(dados.data_vencimento)
-        $('#cliente_nome').val(dados.venda.cliente.nome)
-        $('#data_pagamento').val(dataHoje)
-        $('.modal-area').show()
-    })
-}
-
-$('#btnFormReceberConta').click(function (e){
-
-    let valorPago = $('#valor_pago').val()
-    valorPago =  valorPago.replace(',','.') 
-    valorPago = valorPago.replace('R$','') * 1
-
-    let valorParcela = $('#valor_parcela').val()
-    valorParcela =  valorParcela.replace(',','.')
-    valorParcela = valorParcela.replace('R$','') * 1
-
-
-    let decisao = $('#decisao-conta').val()
-
-    console.log(valorPago)
-    console.log(valorParcela)
-    if(valorPago > 0 && valorPago < valorParcela && decisao  == ''){
-        e.preventDefault();
-        $('#mensagem-modal-confirmacao p').html('<span class="texto-alerta">O valor recebido é menor do que o valor da parcela atual.</span><br> Deseja manter a conta deste mês aberta ou passar a diferença para as proximas parcelas?')
-        $('#grupo-botoes-modal-confirmacao').html('<button onclick="escolhaContaModal(\'manter\')" type="button"><span>Manter conta aberta</span></button><button onclick="escolhaContaModal(\'passar\')" type="button"><span>Passar para proximas parcelas</span></button>')
-        $('#modal-escolha').show()
-    }else if(valorPago > 0 && valorPago > valorParcela && decisao  == ''){
-        e.preventDefault();
-        $('#mensagem-modal-confirmacao p').html('<span class="texto-alerta">O valor pago é maior do que o valor da parcela.</span><br> A diferença no valor será abatido no próximo mês')
-        $('#grupo-botoes-modal-confirmacao').html('<button onclick="fecharModal(\'escolha-\')" type="button"><span>Cancelar</span></button><button onclick="escolhaContaModal(\'passar\')" type="button"><span>Passar para proximas parcelas</span></button>')
-        $('#modal-escolha').show()
-    }
-    
-})
 
 function escolhaContaModal(option){
     $('#decisao-conta').val(option)
@@ -438,7 +391,10 @@ $('#form-receber-conta').submit(function (event){
     
 function fecharModal(modal = ''){
     $('.modal-'+modal+'area').hide()
-   
+}
+
+function closeModal(modalId){
+    $('#modal-area-'+modalId).hide()
 }
 
 //------------- Limpar filtros -------------------

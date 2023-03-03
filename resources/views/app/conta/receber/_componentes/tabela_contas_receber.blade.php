@@ -36,7 +36,7 @@
                         @endif
                     </td>
                     <td>
-                        <button title="Visualizar conta" onclick="receberConta({{$conta->id}})" class="view">
+                        <button title="Visualizar conta" onclick="visualizarConta({{$conta->id}})" class="view">
                             <img src="{{ asset('icones/eye-solid.svg') }}" alt="">
                         </button>
                         @if ($conta->status == 0)
