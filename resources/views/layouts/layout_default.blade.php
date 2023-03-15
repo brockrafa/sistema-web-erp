@@ -26,4 +26,5 @@
 <script src="{{ asset('js/js.js') }}"></script>
 <script src="{{ asset('js/autoselect.js') }}"></script>
 <script src="{{ asset('js/core.js') }}"></script>
+@yield('scripts')
 </html>

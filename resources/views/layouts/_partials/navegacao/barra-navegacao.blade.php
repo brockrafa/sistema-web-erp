@@ -3,12 +3,12 @@
         <img src="{{ asset('imagens/pngtree-user-vector-avatar-png-image_1541962.jpg')  }} " class="foto-usuario-barra-navegacao" alt="">
         <p class="nome-usuario-barra-navegacao">
             @if ($_SESSION['menu'] == 1)
-                {{substr('Rafael Raposo',0,1)}}
+                {{substr($_SESSION['nome'],0,1)}}
             @else
-                Rafael Raposo
+                {{$_SESSION['nome']}}
             @endif
         </p>
-        <span class="nome-usuario-barra-navegacao-completo" style="display: none">Rafael Raposo</span>
+        <span class="nome-usuario-barra-navegacao-completo" style="display: none">{{$_SESSION['nome']}}</span>
     </div>
     <div class="body-barra-navegacao">
         <ul>
