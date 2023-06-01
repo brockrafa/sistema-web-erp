@@ -2,9 +2,10 @@
     <table id="tabela-default">
         <thead>
         <tr>
-            <th scope="col">Nome</th>
+            <th  style="padding-right:20px" scope="col">Cliente</th>
             <th scope="col">Vencimento</th>
-            <th scope="col">Valor</th>
+            <th scope="col">Valor da parcela</th>
+            <th scope="col">Valor Recebido</th>
             <th scope="col">Data pagamento</th>
             <th scope="col">Status</th>
             <th scope="col">Ações</th>
@@ -14,9 +15,10 @@
             @foreach ($contas as $conta)
                 
                 <tr id="conta_{{$conta->id}}">
-                    <td>{{$conta->venda->cliente->nome}}</td>
+                    <td>{{ucwords($conta->venda->cliente->nome)}}</td>
                     <td>{{date('d/m/Y', strtotime($conta->data_vencimento)) }}</td>
                     <td>R$ {{ number_format($conta->valor_receber, 2, ',', '') }}</td>
+                    <td>R$ {{ number_format($conta->valor_recebido, 2, ',', '') }}</td>
                     <td> {{$conta->data_pagamento ? date('d/m/Y', strtotime($conta->data_pagamento)) : 'N/I'}}</td>
                     <td>
                         @if ($conta->data_pagamento)

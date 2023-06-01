@@ -65,12 +65,15 @@ function verificaCampo(elemento,hidden){
     }
 }
 
-function selectedOption(id,nome,elemento){
+function selectedOption(id,nome,elemento,callback){
     let obj = '<img id="autoselect-delete-'+elemento+'"  onclick="limparSelectLista(\''+elemento+'\')" class="autoselect-delete" src="/icones/fechar-x.svg" alt="">'
     $("#"+elemento).after(obj)
     $('#'+elemento).fadeOut()
-    $('#'+elemento+'-input').val(id+" - " +nome)
+    $('#'+elemento+'-input').val(nome)
     $('#'+elemento+'-input-hiden').val(id+" - " +nome)
+    
+    console.log($('#'+elemento+'-input-hiden').val())
+    callback(id)
 }
 
 function limparSelectLista(elemento){

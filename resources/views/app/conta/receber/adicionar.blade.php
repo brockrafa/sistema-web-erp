@@ -61,13 +61,34 @@
             </div>
             <div class="form-section">
                 <input required required type="hidden"  name="valor_total_itens" id="valor_total_itens">
+
+                <!--<div class="form-grupo lista-autocomplete-input-teste w-flex">
+                    <label for="produto">Nome do produto/serviço<small>{{ $errors->has('produto') ? $errors->first('produto') : ''}}</small></label>
+
+                    <input value="{{old('produto')}}" required autocomplete="off" onkeyup="verificaCampo('lista-produtos',true)" class="lista-autocomplete-input"  id="lista-produtos-input">
+                    <input name="produto" type="hidden" autocomplete="off" id="lista-produtos-input-hiden">
+
+                    <img id="autoselect-arrow-down-lista-produtos"  class="autoselect-arrow-down" src="/icones/arrow-down.svg" alt="">
+                    <div id="lista-produtos" class="lista-autocomplete">
+                        <span>Digite o nome de um produto</span>
+                    </div>
+                </div>-->
+
                 <div class="form-grupo w-flex">
                     <label for="nome_item_add">
                         Produto/Serviço
                         <small>{{ $errors->has('valor_total_itens') ? 'Insira pelo menos 1 produto' : ''}}</small>
                     </label>
-                    <input type="text" id="nome_item_add">
+                    <select name="id_item_add" id="select_produto">
+                        <option value="">Selecione um produto</option>
+                        @foreach($produtos as $produto)
+                            <option value="{{$produto->id}}">{{$produto->produto}}</option>
+                        @endforeach
+                    </select>
+                     <!-- <input type="text" id="nome_item_add">  -->
                 </div>
+
+
                 <div class="form-grupo w-flex">
                     <label for="valor_item_add">
                         Valor do item
@@ -161,4 +182,7 @@
 
     </form>
 
+    <script>
+        let tdsProdutos = {!! json_encode($produtos->toArray()) !!};
+    </script>
 @endsection

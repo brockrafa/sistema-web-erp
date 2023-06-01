@@ -3,7 +3,6 @@ let visualizarContaModalID = 'visualizarConta'
 function visualizarConta(idConta){
     $.get('/app/contas/receber/receive/'+idConta,function (data){
         let dados = JSON.parse(data)
-
         let dataFormatada =''
         if(dados.data_pagamento){
             let dataOriginal = new Date(dados.data_pagamento);
@@ -15,12 +14,15 @@ function visualizarConta(idConta){
         }
 
         $('#id_conta_view').val(dados.id)
-        $('#valor_parcela_view').val('R$ '+dados.valor_receber.toFixed(2))
+        $('#valor_parcela_view').val('R$ '+dados.valor_receber.toFixed(2).replace('.',','))
         $('#data_vencimento_view').val(dados.data_vencimento)
-        $('#cliente_nome_view').val(dados.venda.cliente.nome)
+        let nome = dados.venda.cliente.nome
+        nome= nome[0].toUpperCase() + nome.substring(1)
+
+        $('#cliente_nome_view').val(nome)
         $('#data_pagamento_view').val(dataFormatada)
+        $('#valor_pago_view').val('R$ '+ Number.parseFloat(dados.valor_recebido).toFixed(2).replace('.',','))
         $('#quantidade_parcelas_view').val('Parcela '+ dados.parcela_atual + ' de ' +dados.total_parcelas + ' parcela(s)')
-        console.log(dados)
         
         $('#modal-area-'+visualizarContaModalID).show()
     })
@@ -65,8 +67,6 @@ $('#btnFormReceberConta').click(function (e){
 
     let decisao = $('#decisao-conta').val()
 
-    console.log(valorPago)
-    console.log(valorParcela)
     if(valorPago > 0 && valorPago < valorParcela && decisao  == ''){
         e.preventDefault();
         $('#mensagem-modal-confirmacao p').html('<span class="texto-alerta">O valor recebido é menor do que o valor da parcela atual.</span><br> Deseja manter a conta deste mês aberta ou passar a diferença para as proximas parcelas?')
@@ -75,8 +75,9 @@ $('#btnFormReceberConta').click(function (e){
     }else if(valorPago > 0 && valorPago > valorParcela && decisao  == ''){
         e.preventDefault();
         $('#mensagem-modal-confirmacao p').html('<span class="texto-alerta">O valor pago é maior do que o valor da parcela.</span><br> A diferença no valor será abatido no próximo mês')
-        $('#grupo-botoes-modal-confirmacao').html('<button onclick="fecharModal(\'escolha-\')" type="button"><span>Cancelar</span></button><button onclick="escolhaContaModal(\'passar\')" type="button"><span>Passar para proximas parcelas</span></button>')
+        $('#grupo-botoes-modal-confirmacao').html('<button onclick="fecharModal(\'escolha-\')" type="button"><span>Cancelar</span></button><button onclick="escolhaContaModal(\'abater\')" type="button"><span>Passar para proximas parcelas</span></button>')
         $('#modal-escolha').show()
     }
     
 })
+

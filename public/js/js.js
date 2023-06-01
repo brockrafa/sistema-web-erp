@@ -184,12 +184,14 @@ function toggleMenu(){
 }
 
 function adicionarItemContaReceber(){
-    let item = $('#nome_item_add').val()
+    let item = $('#select_produto').val()
     let valor= $('#valor_item_add').val()
     let qtd  = $('#quantidade_item_add').val()
     let vlT = $('#valor_total_itens').val()
 
     if(item != '' && valor != '' && qtd != ''){
+        let itemObj = tdsProdutos.filter(i => i.id == $('#select_produto').val())
+        item = itemObj[0].produto
         if($('#tabela-vazia').length){
             $('#tabela-vazia').remove()
         }
@@ -200,10 +202,10 @@ function adicionarItemContaReceber(){
         valor = "R$" +  valor.replace('.',',');
 
         let idTemp = Math.floor(Date.now() * Math.random()).toString(36)
-        let elemento = '<tr class="input-table-row" id="'+idTemp+'"><td><input readonly type="text" name="item[]" value="'+item+'"></td><td><input readonly type="text"  name="valor[]" value="'+valor+'"></td><td><input type="text" readonly name="quantidade[]" value="'+qtd+'"></td><td><input readonly type="text" value="'+valorTotal+'"></td><td><button  type="button" class="delete" onclick="deleteItemContaReceber(\''+idTemp+'\',\''+valorTotal+'\')"><img src="/icones/lixeira.svg" alt=""></button></td></tr>'
+        let elemento = '<tr class="input-table-row" id="'+idTemp+'"><td><input readonly type="hidden" name="item[]" value="'+itemObj[0].id+'"><input readonly type="text" value="'+itemObj[0].produto+'"></td><td><input readonly type="text"  name="valor[]" value="'+valor+'"></td><td><input type="text" readonly name="quantidade[]" value="'+qtd+'"></td><td><input readonly type="text" value="'+valorTotal+'"></td><td><button  type="button" class="delete" onclick="deleteItemContaReceber(\''+idTemp+'\',\''+valorTotal+'\')"><img src="/icones/lixeira.svg" alt=""></button></td></tr>'
         let tr = $(elemento);
         $("tbody").append(tr);
-        $('#nome_item_add').val('')
+        $('#select_produto').val('')
         $('#valor_item_add').val('')
         $('#quantidade_item_add').val('1')
         $('#valor_total_itens').val(valorTotalItens)
@@ -348,6 +350,19 @@ function listaClientes(valor,elemento){
     })
 }
 
+function listaProdutos(valor = null,elemento){
+    let str = $('#lista-produtos-input').val().toUpperCase()
+    let produtos = tdsProdutos.filter(p => p.produto.toUpperCase().includes(str) )
+    let val = $("#valor_item_add")
+    val.val("")
+    produtos.forEach(produto => {
+        let on = "onclick=\"selectedOption("+produto.id+",'"+produto.produto+"','"+elemento+"')\""
+        $('#'+elemento).append("<span "+on+">"+produto.id + " - " +produto.produto+"</span>")
+        val.val(produto.preco)
+    })
+        
+}
+
 function listaUsuarios(valor,elemento){
     $.get('/list/usuarios?nome='+valor,function (data){
         let clientes= JSON.parse(data)
@@ -428,3 +443,45 @@ function limparNovoChamado(){
     $('#contrato').val("")
     $('#descricao').val("")
 }
+
+function alterarStatusProduto(id,e){
+    e.preventDefault()
+
+    switchProd = '#switch-shadow-' + id
+    let statusP = $(switchProd).is(":checked")
+
+
+    let form = $('#form-atualiza-status-produto-'+id).serialize()
+
+
+    $.post("/app/produto/atualizar/status", form,function (data){
+        console.log(data)
+        /*if(conta.STATUS == 1){
+            fecharModal();
+            $('.alerta-sucesso').html('Conta recebida com sucesso!')
+            $('.alerta-sucesso').fadeIn();
+            removerAlerta()
+
+        }else{
+            fecharModal();
+            $('.alerta-erro').html('Ocorreu um erro ao receber conta. Tente novamente mais tarde')
+            $('.alerta-erro').fadeIn();
+            removerAlerta()
+        }*/
+    })
+}
+
+
+$('#select_produto').change(function (e){
+    let idSelecionado = $('#select_produto').val()
+    let val = $("#valor_item_add")
+
+    if(idSelecionado != ''){
+        let produto = tdsProdutos.filter(prod => prod.id == idSelecionado)[0]
+        val.val(produto.preco)
+    }else{
+        val.val("")
+    }
+
+
+ })

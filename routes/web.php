@@ -5,6 +5,7 @@ use App\Http\Middleware\ControleAcesso;
 
 
 Route::get('/login/{mensagem?}', [\App\Http\Controllers\LoginController::class,'index'])->name('login.index');
+Route::get('/', [\App\Http\Controllers\LoginController::class,'index'])->name('login.index');
 Route::post('/login/autenticar', [\App\Http\Controllers\LoginController::class,'autenticar'])->name('login.autenticar');
 Route::get('/logoff', [\App\Http\Controllers\LoginController::class,'logoff'])->name('login.logoff');
 Route::get('/login/password/reset/{status?}/{mensagem?}', [\App\Http\Controllers\RecuperacaoSenha::class,'passwordReset'])->name('login.password.reset');
@@ -38,6 +39,12 @@ Route::middleware('controle.acesso')->prefix('app')->group(function(){
     Route::get('/cliente/editar/{id}/{msg?}', [\App\Http\Controllers\ClienteController::class,'editar'])->name('app.clientes.editar');
     Route::get('/get-table-clientes', [\App\Http\Controllers\ClienteController::class,'getTable'])->name('app.get_table');
 
+    // Produtos
+    Route::get('/produtos', [\App\Http\Controllers\ProdutoController::class,'index'])->name('app.produtos');
+    Route::get('/produto/cadastrar', [\App\Http\Controllers\ProdutoController::class,'cadastrar'])->name('app.produto.cadastrar');
+    Route::post('/produto/cadastrar/store', [\App\Http\Controllers\ProdutoController::class,'store'])->name('app.produto.cadastrar.store');
+    Route::post('/produto/atualizar/status', [\App\Http\Controllers\ProdutoController::class,'atualizarStatus'])->name('app.produto.atualizar.statusProduto');
+    
     // Usuarios
     Route::resource('usuario','App\Http\Controllers\UsuarioController');
 
@@ -58,8 +65,6 @@ Route::middleware('controle.acesso')->prefix('app')->group(function(){
     Route::get('/configuracao/status/delete/{id?}', [\App\Http\Controllers\ConfiguracaoController::class,'statusDelete'])->name('configuracao.status.delete');
     Route::get('/configuracao/status/edit/{id?}', [\App\Http\Controllers\ConfiguracaoController::class,'editarStatus'])->name('configuracao.status.edit');
     Route::post('/configuracao/status/update', [\App\Http\Controllers\ConfiguracaoController::class,'updateStatus'])->name('configuracao.status.update');
-
-
 
 });
 

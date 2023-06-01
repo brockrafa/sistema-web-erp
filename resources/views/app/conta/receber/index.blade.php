@@ -178,6 +178,11 @@
                 </div>
 
                 <div class="form-grupo">
+                    <label for="valor_pago">Valor recebido</label>
+                    <input type="text"  disabled id="valor_pago_view">
+                </div>
+
+                <div class="form-grupo">
                     <label for="data_vencimento">Parcelas</label>
                     <input type="text" disabled  id="quantidade_parcelas_view">
                 </div>

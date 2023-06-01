@@ -6,6 +6,7 @@ use App\Models\Venda;
 use App\Models\Usuario;
 use App\Models\ItensVenda;
 use App\Models\ContasReceber;
+use App\Models\Produto;
 use Illuminate\Http\Request;
 
 class ContaPagarReceberController extends Controller
@@ -72,7 +73,8 @@ class ContaPagarReceberController extends Controller
     }
 
     public function create(){
-        return view('app.conta.receber.adicionar');
+        $produtos = Produto::where('id_empresa',$_SESSION['id_empresa'])->where('disponibilidade',1)->get();
+        return view('app.conta.receber.adicionar',['produtos' => $produtos]);
     }
 
     public function store(Request $request){
@@ -95,14 +97,14 @@ class ContaPagarReceberController extends Controller
         }
 
         $cliente = Cliente::where('id',trim($cliente[0]))->where('nome',trim($cliente[1]))->first();
-        
         $venda = new Venda();
+        $parcelas = $request->get("qtd_parcelas") == null ? 1 : $request->get("qtd_parcelas");
         $venda->cliente_id = $cliente->id;
         $venda->usuario_id = $_SESSION['id'];
         $venda->valor_total = $request->get("valor_total_itens");
         $venda->meio_pagamento_id = $request->get("meio_pagamento");
-        $venda->qtd_parcelas = $request->get("qtd_parcelas");
-        $venda->valor_parcelas = $request->get("valor_total_itens") / $request->get("qtd_parcelas");
+        $venda->qtd_parcelas = $parcelas;
+        $venda->valor_parcelas = $request->get("valor_total_itens") / $parcelas;
         $venda->data_primeira_parcela = $request->get("data_vencimento") ? $request->get("data_vencimento") : date('Y-m-d');
         $venda->data_vencimento = $request->get("data_vencimento") ? $request->get("data_vencimento") : date('Y-m-d');
         $venda->status_venda_id = 0;
@@ -119,18 +121,39 @@ class ContaPagarReceberController extends Controller
     }
 
     private function adicionarItensVenda(Request $request,int $idVenda){
+
         $itens = $request->get('item');
         $valor = $request->get('valor');
         $quantidade = $request->get('quantidade');
+        foreach($itens as  $key => $prod){
+            if(is_numeric($prod)){
+                $p = Produto::find($prod);
+                $item = new ItensVenda();
+                $item->venda_id = $idVenda;
+                $item->item = $p->produto;
+                $val = $p->preco;
+                $val = str_replace(",",".",$val);
+                $item->valor = $val;
+                $item->quantidade = $quantidade[$key];
+                dd($item);
+                $item->save();
+            }else{
+                $item = new ItensVenda();
+                $item->venda_id = $idVenda;
+                $item->item = $itens[$key];
+                $val = str_replace("R$","",$valor[$key]);
+                $val = str_replace(",",".",$val);
+                $item->valor = $val;
+                $item->quantidade = $quantidade[$key];
+                dd($item);
+                $item->save();
+            }
+            
+        }
+        dd($request->all());
+
         for($i = 0;$i < count($itens);$i++){
-            $item = new ItensVenda();
-            $item->venda_id = $idVenda;
-            $item->item = $itens[$i];
-            $val = str_replace("R$","",$valor[$i]);
-            $val = str_replace(",",".",$val);
-            $item->valor = $val;
-            $item->quantidade = $quantidade[$i];
-            $item->save();
+           
         }
         return true;
     }
@@ -184,20 +207,22 @@ class ContaPagarReceberController extends Controller
         $conta->STATUS = 1; 
         if($request->get('decisao_conta')){
             $this->recalcularParcelas($conta,$request);
-            dd("Recalcular parcela");
         }
         $conta->update();
         return redirect()->route('contas.receber.index',['msg'=>'Conta recebida com sucesso!']);
     }
 
     private function recalcularParcelas($conta,Request $request){
-        $parcelas = $conta->qtd_parcelas;
-        if($request->get('decisao_conta') == 'manter'){
-            echo 'Manter esse mes aberto';
-        }else{
-            echo 'Passar para proximas';
+
+        $parcelas = $conta->total_parcelas;
+
+        if($request->get('decisao_conta') == 'passar'){
+            $ultimaParcela = ContasReceber::where('venda_id',$conta->venda_id)->where('parcela_atual',$parcelas)->first();
+            $valorFuturo = $conta->valor_receber - $conta->valor_recebido;
+            $ultimaParcela->valor_receber += $valorFuturo;
+            $ultimaParcela->update();
+            $conta->status = 1;
         }
-        dd($conta);
-        return 1;
+        return $conta;
     }
 }

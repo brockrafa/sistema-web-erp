@@ -30,6 +30,12 @@
                     <span>Clientes</span>
                 </a>
             </li>
+            <li id="produtos">
+                <a href="{{ route('app.produtos')}}">
+                    <img src="{{ asset('icones/contatos.svg') }}" alt="">
+                    <span>Produtos/Serviços</span>
+                </a>
+            </li>
             <li id="conta" onclick="">
                 <a href="#" class="dropdown" onclick="expandDropDown('conta',event)">
                     <img src="{{ asset('icones/config.svg') }}" alt="">
