@@ -14,13 +14,13 @@
         <ul>
             <li id="home">
                 <a href="{{ route('app.home') }}">
-                    <img src="{{ asset('icones/planilha.svg') }}" alt="">
+                    <img src="{{ asset('icones/house-solid.svg') }}" alt="">
                     <span>Home</span>
                 </a>
             </li>
             <li id="chamado"> 
                 <a href="{{ route('app.chamados') }}">
-                    <img src="{{ asset('icones/planilha.svg') }}" alt="">
+                    <img src="{{ asset('icones/headset-solid.svg') }}" alt="">
                     <span>Chamados</span>
                 </a>
             </li>
@@ -32,13 +32,13 @@
             </li>
             <li id="produtos">
                 <a href="{{ route('app.produtos')}}">
-                    <img src="{{ asset('icones/contatos.svg') }}" alt="">
+                    <img src="{{ asset('icones/box-open-solid.svg') }}" alt="">
                     <span>Produtos/Serviços</span>
                 </a>
             </li>
             <li id="conta" onclick="">
                 <a href="#" class="dropdown" onclick="expandDropDown('conta',event)">
-                    <img src="{{ asset('icones/config.svg') }}" alt="">
+                    <img src="{{ asset('icones/money-bill-transfer-solid.svg') }}" alt="">
                     <span>Contas</span>
                     <img id="conta-img" src="{{ asset('icones/arrow-right.svg') }}" alt="">
                 </a>
@@ -61,14 +61,14 @@
                     <ul id="config-dropdown" class="first-lv">
                         <li class="dropdown">
                             <a href="#" onclick="expandDropDown('status')">
-                                <img src="{{ asset('icones/planilha.svg') }}" alt="">
+                                <img src="{{ asset('icones/headset-solid.svg') }}" alt="">
                                 <span>Chamados</span>
                                 <img id="status-img" src="{{ asset('icones/arrow-right.svg') }}" alt="">
                             </a>
                                 <ul id="status-dropdown" class="second-lv" style="display:none;">
                                     <li>
                                         <a href="{{route('configuracao.status')}}">
-                                            <img src="{{ asset('icones/planilha.svg') }}" alt="">
+                                            <img src="{{ asset('icones/arrows-spin-solid.svg') }}" alt="">
                                             <span>Status</span>
                                         </a>
                                     </li>
@@ -76,7 +76,7 @@
                         </li>
                         <li class="dropdown">
                             <a href="{{route('usuario.index')}}">
-                                <img src="{{ asset('icones/planilha.svg') }}" alt="">
+                                <img src="{{ asset('icones/usuarios.svg') }}" alt="">
                                 <span>Usuarios</span>
                             </a>
                         </li>
@@ -85,15 +85,8 @@
 
             <li>
                 <a href="{{ route('login.logoff')}}">
-                    <img src="{{ asset('icones/config.svg') }}" alt="">
+                    <img src="{{ asset('icones/sign-out-alt-solid.svg') }}" alt="">
                     <span>Sair</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ route('app.teste')}}">
-                    <img src="{{ asset('icones/config.svg') }}" alt="">
-                    <span>Testes</span>
                 </a>
             </li>
         </ul>

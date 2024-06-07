@@ -4,10 +4,10 @@
         <img onmouseOver="mostrarNotificacoes()" onmouseout="mostrarNotificacoes()" class="icone-notificacoes" src="{{ asset('icones/sino.svg')}}" alt="">
         <span class="quantidade-notificacoes">4</span>
         <div id="area-notificacoes">
-            <p>Amanha é isso</p>
-            <p>Depois é isso</p>
-            <p>Depois é isso</p>
-            <p>Depois é isso</p>
+            <p>Notificação 1</p>
+            <p>Notificação 2</p>
+            <p>Notificação 3</p>
+            <p>Notificação 4</p>
         </div>
         <span>|</span>
         <div class="area-utilitarios-usuario">

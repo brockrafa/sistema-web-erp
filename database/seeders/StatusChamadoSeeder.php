@@ -14,9 +14,9 @@ class StatusChamadoSeeder extends Seeder
      */
     public function run()
     {
-        StatusChamado::create(['status'=>'Aberto']);
-        StatusChamado::create(['status'=>'Fechado']);
-        StatusChamado::create(['status'=>'Em andamento']);
+        StatusChamado::create(['status'=>'Aberto','font_color'=>'#ffffff','background_color'=>'black']);
+        StatusChamado::create(['status'=>'Fechado','font_color'=>'#ffffff','background_color'=>'red']);
+        StatusChamado::create(['status'=>'Em andamento','font_color'=>'#ffffff','background_color'=>'blue']);
 
     }
 }

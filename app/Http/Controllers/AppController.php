@@ -12,10 +12,12 @@ class AppController extends Controller
 {
     public function index(){
         $chamados = Chamado::groupBy('data_abertura')
-        ->selectRaw('DAY(data_abertura) AS dia,count(*) as sum,data_abertura')
+        ->selectRaw('DAY(data_abertura) AS dia,count(*) as sum,data_abertura')->orderBy("data_abertura",'asc')
         ->get();
-        $clientes = Cliente::groupBy('dia')
-        ->selectRaw('DAY(created_at) AS dia,count(*) as sum')
+
+        $clientes = Cliente::whereRaw('month(created_at) = month(now())')
+        ->selectRaw('DAY(created_at) AS dia,count(*) as sum,DATE(created_at) as data')->orderBy("data",'asc')
+        ->groupBy('data','dia')
         ->get();
         return view('app.index',['chamados'=>$chamados,'clientes'=>$clientes]);
     }

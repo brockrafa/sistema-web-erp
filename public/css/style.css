@@ -23,6 +23,11 @@
     width: 30px;
     margin-right:5px;
 }
+#header-secao svg{
+    height: 20px;
+    width: 30px;
+    fill: #656565;
+}
 #header-secao a{
     display: flex;
     align-items: center;
@@ -160,7 +165,11 @@
 #header-secao-adicionar img{
     height: 20px;
     width: 30px;
-    margin-right:5px;
+}
+#header-secao-adicionar svg{
+    height: 20px;
+    width: 30px;
+    fill: #656565;
 }
 #header-secao-adicionar a{
     display: flex;

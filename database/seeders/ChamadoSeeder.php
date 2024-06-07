@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Cliente;
+use App\Models\Chamado;
 
-class ClienteSeeder extends Seeder
+class ChamadoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class ClienteSeeder extends Seeder
      */
     public function run()
     {
-        Cliente::factory()->count(500)->create();
+        Chamado::factory()->count(1000)->create();
     }
 }

@@ -29,6 +29,7 @@ class AlterChamadosTableAlterColumn extends Migration
     {
         Schema::table('chamados', function (Blueprint $table) {
             $table->unsignedBigInteger('id_responsavel')->change();
+            $table->dropForeign(['id_responsavel']);
             $table->foreign('id_responsavel')->references('id')->on('usuarios')->change();
         });
     }

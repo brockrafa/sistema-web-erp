@@ -20,6 +20,7 @@ class ClienteFactory extends Factory
     public function definition()
     {
         return [
+            'id_empresa'=>$this->faker->numberBetween(1,1),
             'documento'=> $this->faker->numberBetween(10000000000,99999999999),
             'nome'=> $this->faker->name,
             'logradouro'=> $this->faker->streetName,
@@ -28,7 +29,9 @@ class ClienteFactory extends Factory
             'bairro'=> $this->faker->state,
             'cidade'=> $this->faker->city,
             'uf'=> $this->faker->stateAbbr,
-            'sexo'=>$this->faker->numberBetween(1,2)
+            'sexo'=>$this->faker->numberBetween(1,2),
+            'created_at' => $this->faker->dateTimeBetween('-14 days', 'now'),
+            'updated_at'=>$this->faker->date(),
         ];
     }
 }
